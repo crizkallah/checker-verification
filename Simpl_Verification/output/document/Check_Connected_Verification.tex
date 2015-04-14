@@ -1,0 +1,319 @@
+%
+\begin{isabellebody}%
+\def\isabellecontext{Check{\isacharunderscore}Connected{\isacharunderscore}Verification}%
+%
+\isadelimtheory
+%
+\endisadelimtheory
+%
+\isatagtheory
+\isacommand{theory}\isamarkupfalse%
+\ Check{\isacharunderscore}Connected{\isacharunderscore}Verification\isanewline
+\isakeyword{imports}\ Vcg\ Check{\isacharunderscore}Connected{\isacharunderscore}Impl\isanewline
+\isakeyword{begin}%
+\endisatagtheory
+{\isafoldtheory}%
+%
+\isadelimtheory
+\isanewline
+%
+\endisadelimtheory
+\isanewline
+\isacommand{definition}\isamarkupfalse%
+\ no{\isacharunderscore}loops\ {\isacharcolon}{\isacharcolon}\ {\isachardoublequoteopen}{\isacharparenleft}{\isacharprime}a{\isacharcomma}\ {\isacharprime}b{\isacharparenright}\ pre{\isacharunderscore}digraph\ {\isasymRightarrow}\ bool{\isachardoublequoteclose}\ \isakeyword{where}\isanewline
+\ \ {\isachardoublequoteopen}no{\isacharunderscore}loops\ G\ {\isasymequiv}\ {\isasymforall}e\ {\isasymin}\ arcs\ G{\isachardot}\ tail\ G\ e\ {\isasymnoteq}\ head\ G\ e{\isachardoublequoteclose}\isanewline
+\isanewline
+\isacommand{definition}\isamarkupfalse%
+\ abs{\isacharunderscore}IGraph\ {\isacharcolon}{\isacharcolon}\ {\isachardoublequoteopen}IGraph\ {\isasymRightarrow}\ {\isacharparenleft}nat{\isacharcomma}\ nat{\isacharparenright}\ pre{\isacharunderscore}digraph{\isachardoublequoteclose}\ \isakeyword{where}\isanewline
+\ \ {\isachardoublequoteopen}abs{\isacharunderscore}IGraph\ G\ {\isasymequiv}\ {\isasymlparr}\ verts\ {\isacharequal}\ {\isacharbraceleft}{\isadigit{0}}{\isachardot}{\isachardot}{\isacharless}ivertex{\isacharunderscore}cnt\ G{\isacharbraceright}{\isacharcomma}\ arcs\ {\isacharequal}\ {\isacharbraceleft}{\isadigit{0}}{\isachardot}{\isachardot}{\isacharless}iedge{\isacharunderscore}cnt\ G{\isacharbraceright}{\isacharcomma}\isanewline
+\ \ \ \ tail\ {\isacharequal}\ fst\ o\ iedges\ G{\isacharcomma}\ head\ {\isacharequal}\ snd\ o\ iedges\ G\ {\isasymrparr}{\isachardoublequoteclose}\isanewline
+\isanewline
+\isacommand{lemma}\isamarkupfalse%
+\ verts{\isacharunderscore}absI{\isacharbrackleft}simp{\isacharbrackright}{\isacharcolon}\ {\isachardoublequoteopen}verts\ {\isacharparenleft}abs{\isacharunderscore}IGraph\ G{\isacharparenright}\ {\isacharequal}\ {\isacharbraceleft}{\isadigit{0}}{\isachardot}{\isachardot}{\isacharless}ivertex{\isacharunderscore}cnt\ G{\isacharbraceright}{\isachardoublequoteclose}\isanewline
+\ \ \isakeyword{and}\ arcs{\isacharunderscore}absI{\isacharbrackleft}simp{\isacharbrackright}{\isacharcolon}\ {\isachardoublequoteopen}arcs\ {\isacharparenleft}abs{\isacharunderscore}IGraph\ G{\isacharparenright}\ {\isacharequal}\ {\isacharbraceleft}{\isadigit{0}}{\isachardot}{\isachardot}{\isacharless}iedge{\isacharunderscore}cnt\ G{\isacharbraceright}{\isachardoublequoteclose}\isanewline
+\ \ \isakeyword{and}\ tail{\isacharunderscore}absI{\isacharbrackleft}simp{\isacharbrackright}{\isacharcolon}\ {\isachardoublequoteopen}tail\ {\isacharparenleft}abs{\isacharunderscore}IGraph\ G{\isacharparenright}\ e\ {\isacharequal}\ fst\ {\isacharparenleft}iedges\ G\ e{\isacharparenright}{\isachardoublequoteclose}\isanewline
+\ \ \isakeyword{and}\ head{\isacharunderscore}absI{\isacharbrackleft}simp{\isacharbrackright}{\isacharcolon}\ {\isachardoublequoteopen}head\ {\isacharparenleft}abs{\isacharunderscore}IGraph\ G{\isacharparenright}\ e\ {\isacharequal}\ snd\ {\isacharparenleft}iedges\ G\ e{\isacharparenright}{\isachardoublequoteclose}\isanewline
+%
+\isadelimproof
+\ \ %
+\endisadelimproof
+%
+\isatagproof
+\isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}auto\ simp{\isacharcolon}\ abs{\isacharunderscore}IGraph{\isacharunderscore}def{\isacharparenright}%
+\endisatagproof
+{\isafoldproof}%
+%
+\isadelimproof
+\isanewline
+%
+\endisadelimproof
+\isanewline
+\isacommand{lemma}\isamarkupfalse%
+\ is{\isacharunderscore}wellformed{\isacharunderscore}inv{\isacharunderscore}step{\isacharcolon}\isanewline
+\ \ {\isachardoublequoteopen}is{\isacharunderscore}wellformed{\isacharunderscore}inv\ G\ {\isacharparenleft}Suc\ i{\isacharparenright}\ {\isasymlongleftrightarrow}\ is{\isacharunderscore}wellformed{\isacharunderscore}inv\ G\ i\isanewline
+\ \ \ \ \ \ {\isasymand}\ fst\ {\isacharparenleft}iedges\ G\ i{\isacharparenright}\ {\isacharless}\ ivertex{\isacharunderscore}cnt\ G\ {\isasymand}\ snd\ {\isacharparenleft}iedges\ G\ i{\isacharparenright}\ {\isacharless}\ ivertex{\isacharunderscore}cnt\ G{\isachardoublequoteclose}\isanewline
+%
+\isadelimproof
+\ \ %
+\endisadelimproof
+%
+\isatagproof
+\isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}auto\ simp\ add{\isacharcolon}\ is{\isacharunderscore}wellformed{\isacharunderscore}inv{\isacharunderscore}def\ less{\isacharunderscore}Suc{\isacharunderscore}eq{\isacharparenright}%
+\endisatagproof
+{\isafoldproof}%
+%
+\isadelimproof
+\isanewline
+%
+\endisadelimproof
+\isanewline
+\isacommand{lemma}\isamarkupfalse%
+\ {\isacharparenleft}\isakeyword{in}\ is{\isacharunderscore}wellformed{\isacharunderscore}impl{\isacharparenright}\ is{\isacharunderscore}wellformed{\isacharunderscore}spec{\isacharcolon}\isanewline
+\ \ {\isachardoublequoteopen}{\isasymforall}G{\isachardot}\ {\isasymGamma}\ {\isasymturnstile}\isactrlsub t\ {\isasymlbrace}{\isasymacute}G\ {\isacharequal}\ G{\isasymrbrace}\ {\isasymacute}R\ {\isacharcolon}{\isacharequal}{\isacharequal}\ PROC\ is{\isacharunderscore}wellformed{\isacharparenleft}{\isasymacute}G{\isacharparenright}\ {\isasymlbrace}{\isasymacute}R\ {\isacharequal}\ is{\isacharunderscore}wellformed{\isacharunderscore}inv\ G\ {\isacharparenleft}iedge{\isacharunderscore}cnt\ G{\isacharparenright}{\isasymrbrace}{\isachardoublequoteclose}\isanewline
+%
+\isadelimproof
+\ \ %
+\endisadelimproof
+%
+\isatagproof
+\isacommand{apply}\isamarkupfalse%
+\ vcg\isanewline
+\ \ \isacommand{apply}\isamarkupfalse%
+\ {\isacharparenleft}auto\ simp{\isacharcolon}\ is{\isacharunderscore}wellformed{\isacharunderscore}inv{\isacharunderscore}step{\isacharparenright}\isanewline
+\ \ \isacommand{apply}\isamarkupfalse%
+\ {\isacharparenleft}auto\ simp{\isacharcolon}\ is{\isacharunderscore}wellformed{\isacharunderscore}inv{\isacharunderscore}def{\isacharparenright}\isanewline
+\ \ \isacommand{done}\isamarkupfalse%
+%
+\endisatagproof
+{\isafoldproof}%
+%
+\isadelimproof
+\isanewline
+%
+\endisadelimproof
+\isanewline
+\isacommand{lemma}\isamarkupfalse%
+\ parent{\isacharunderscore}num{\isacharunderscore}assms{\isacharunderscore}inv{\isacharunderscore}step{\isacharcolon}\isanewline
+\ \ {\isachardoublequoteopen}parent{\isacharunderscore}num{\isacharunderscore}assms{\isacharunderscore}inv\ G\ r\ p\ n\ {\isacharparenleft}Suc\ i{\isacharparenright}\ {\isasymlongleftrightarrow}\ parent{\isacharunderscore}num{\isacharunderscore}assms{\isacharunderscore}inv\ G\ r\ p\ n\ i\isanewline
+\ \ \ \ {\isasymand}\ {\isacharparenleft}i\ {\isasymnoteq}\ r\ {\isasymlongrightarrow}\ {\isacharparenleft}case\ p\ i\ of\isanewline
+\ \ \ \ \ \ None\ {\isasymRightarrow}\ False\isanewline
+\ \ \ \ {\isacharbar}\ Some\ x\ {\isasymRightarrow}\ x\ {\isacharless}\ iedge{\isacharunderscore}cnt\ G\ {\isasymand}\ snd\ {\isacharparenleft}iedges\ G\ x{\isacharparenright}\ {\isacharequal}\ i\ {\isasymand}\ n\ i\ {\isacharequal}\ n\ {\isacharparenleft}fst\ {\isacharparenleft}iedges\ G\ x{\isacharparenright}{\isacharparenright}\ {\isacharplus}\ {\isadigit{1}}{\isacharparenright}{\isacharparenright}{\isachardoublequoteclose}\isanewline
+%
+\isadelimproof
+\ \ %
+\endisadelimproof
+%
+\isatagproof
+\isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}auto\ simp{\isacharcolon}\ parent{\isacharunderscore}num{\isacharunderscore}assms{\isacharunderscore}inv{\isacharunderscore}def\ less{\isacharunderscore}Suc{\isacharunderscore}eq{\isacharparenright}%
+\endisatagproof
+{\isafoldproof}%
+%
+\isadelimproof
+\isanewline
+%
+\endisadelimproof
+\isanewline
+\isacommand{lemma}\isamarkupfalse%
+\ {\isacharparenleft}\isakeyword{in}\ parent{\isacharunderscore}num{\isacharunderscore}assms{\isacharunderscore}impl{\isacharparenright}\ parent{\isacharunderscore}num{\isacharunderscore}assms{\isacharunderscore}spec{\isacharcolon}\isanewline
+\ \ {\isachardoublequoteopen}{\isasymforall}G\ r\ p\ n{\isachardot}\ {\isasymGamma}\ {\isasymturnstile}\isactrlsub t\ {\isasymlbrace}\ {\isasymacute}G\ {\isacharequal}\ G\ {\isasymand}\ {\isasymacute}r\ {\isacharequal}\ r\ {\isasymand}\ {\isasymacute}parent{\isacharunderscore}edge\ {\isacharequal}\ p\ {\isasymand}\ {\isasymacute}num\ {\isacharequal}\ n{\isasymrbrace}\isanewline
+\ \ \ \ {\isasymacute}R\ {\isacharcolon}{\isacharequal}{\isacharequal}\ PROC\ parent{\isacharunderscore}num{\isacharunderscore}assms{\isacharparenleft}{\isasymacute}G{\isacharcomma}\ {\isasymacute}r{\isacharcomma}\ {\isasymacute}parent{\isacharunderscore}edge{\isacharcomma}\ {\isasymacute}num{\isacharparenright}\isanewline
+\ \ \ \ {\isasymlbrace}\ {\isasymacute}R\ {\isacharequal}\ parent{\isacharunderscore}num{\isacharunderscore}assms{\isacharunderscore}inv\ G\ r\ p\ n\ {\isacharparenleft}ivertex{\isacharunderscore}cnt\ G{\isacharparenright}{\isasymrbrace}{\isachardoublequoteclose}\isanewline
+%
+\isadelimproof
+\ \ %
+\endisadelimproof
+%
+\isatagproof
+\isacommand{apply}\isamarkupfalse%
+\ vcg\isanewline
+\ \ \isacommand{apply}\isamarkupfalse%
+\ {\isacharparenleft}simp{\isacharunderscore}all\ add{\isacharcolon}\ parent{\isacharunderscore}num{\isacharunderscore}assms{\isacharunderscore}inv{\isacharunderscore}step{\isacharparenright}\isanewline
+\ \ \isacommand{apply}\isamarkupfalse%
+\ {\isacharparenleft}auto\ simp{\isacharcolon}\ parent{\isacharunderscore}num{\isacharunderscore}assms{\isacharunderscore}inv{\isacharunderscore}def{\isacharparenright}\isanewline
+\ \ \isacommand{done}\isamarkupfalse%
+%
+\endisatagproof
+{\isafoldproof}%
+%
+\isadelimproof
+\isanewline
+%
+\endisadelimproof
+\isanewline
+\isacommand{lemma}\isamarkupfalse%
+\ connected{\isacharunderscore}components{\isacharunderscore}locale{\isacharunderscore}eq{\isacharunderscore}invariants{\isacharcolon}\isanewline
+{\isachardoublequoteopen}{\isasymAnd}G\ r\ p\ n{\isachardot}\ \isanewline
+\ \ connected{\isacharunderscore}components{\isacharunderscore}locale\ {\isacharparenleft}abs{\isacharunderscore}IGraph\ G{\isacharparenright}\ n\ p\ r\ {\isacharequal}\ \isanewline
+\ \ \ \ {\isacharparenleft}is{\isacharunderscore}wellformed{\isacharunderscore}inv\ G\ {\isacharparenleft}iedge{\isacharunderscore}cnt\ G{\isacharparenright}\ {\isasymand}\ \isanewline
+\ \ \ \ r\ {\isacharless}\ ivertex{\isacharunderscore}cnt\ G\ {\isasymand}\ n\ r\ {\isacharequal}\ {\isadigit{0}}\ {\isasymand}\ p\ r\ {\isacharequal}\ None\ {\isasymand}\ \isanewline
+\ \ \ \ parent{\isacharunderscore}num{\isacharunderscore}assms{\isacharunderscore}inv\ G\ r\ p\ n\ {\isacharparenleft}ivertex{\isacharunderscore}cnt\ G{\isacharparenright}{\isacharparenright}{\isachardoublequoteclose}\ \isanewline
+%
+\isadelimproof
+%
+\endisadelimproof
+%
+\isatagproof
+\isacommand{proof}\isamarkupfalse%
+\ {\isacharminus}\isanewline
+\ \ \isacommand{fix}\isamarkupfalse%
+\ G\ r\ p\ n\isanewline
+\ \ \isacommand{let}\isamarkupfalse%
+\ {\isacharquery}aG\ {\isacharequal}\ {\isachardoublequoteopen}abs{\isacharunderscore}IGraph\ G{\isachardoublequoteclose}\isanewline
+\ \ \isacommand{have}\isamarkupfalse%
+\ {\isachardoublequoteopen}is{\isacharunderscore}wellformed{\isacharunderscore}inv\ G\ {\isacharparenleft}iedge{\isacharunderscore}cnt\ G{\isacharparenright}\ {\isacharequal}\ fin{\isacharunderscore}digraph\ {\isacharquery}aG{\isachardoublequoteclose}\isanewline
+\ \ \ \ \isacommand{unfolding}\isamarkupfalse%
+\ is{\isacharunderscore}wellformed{\isacharunderscore}inv{\isacharunderscore}def\ fin{\isacharunderscore}digraph{\isacharunderscore}def\ fin{\isacharunderscore}digraph{\isacharunderscore}axioms{\isacharunderscore}def\isanewline
+\ \ \ \ \ \ wf{\isacharunderscore}digraph{\isacharunderscore}def\ \isanewline
+\ \ \ \ \ \ \isacommand{by}\isamarkupfalse%
+\ auto\isanewline
+\isacommand{moreover}\isamarkupfalse%
+\isanewline
+\ \ \isacommand{have}\isamarkupfalse%
+\ {\isachardoublequoteopen}{\isacharparenleft}{\isasymforall}v\ {\isasymin}\ verts\ {\isacharquery}aG{\isachardot}\ v\ {\isasymnoteq}\ r\ {\isasymlongrightarrow}\isanewline
+\ \ \ \ {\isacharparenleft}{\isasymexists}e\ {\isasymin}\ arcs\ {\isacharquery}aG{\isachardot}\ p\ v\ {\isacharequal}\ Some\ e\ {\isasymand}\ \isanewline
+\ \ \ \ head\ {\isacharquery}aG\ e\ {\isacharequal}\ v\ {\isasymand}\ \isanewline
+\ \ \ \ n\ v\ {\isacharequal}\ \ n\ {\isacharparenleft}tail\ {\isacharquery}aG\ e{\isacharparenright}\ {\isacharplus}\ {\isadigit{1}}{\isacharparenright}{\isacharparenright}\ \isanewline
+\ \ \ \ {\isacharequal}\ parent{\isacharunderscore}num{\isacharunderscore}assms{\isacharunderscore}inv\ G\ r\ p\ n\ {\isacharparenleft}ivertex{\isacharunderscore}cnt\ G{\isacharparenright}{\isachardoublequoteclose}\isanewline
+\ \ \isacommand{proof}\isamarkupfalse%
+\ {\isacharminus}\isanewline
+\ \ \ \ \isacommand{{\isacharbraceleft}}\isamarkupfalse%
+\ \isacommand{fix}\isamarkupfalse%
+\ i\ \isacommand{assume}\isamarkupfalse%
+\ {\isachardoublequoteopen}{\isacharparenleft}case\ p\ i\ of\ None\ {\isasymRightarrow}\ False\isanewline
+\ \ \ \ \ \ \ \ {\isacharbar}\ Some\ x\ {\isasymRightarrow}\ x\ {\isacharless}\ iedge{\isacharunderscore}cnt\ G\ {\isasymand}\ snd\ {\isacharparenleft}iedges\ G\ x{\isacharparenright}\ {\isacharequal}\ i\ {\isasymand}\ n\ i\ {\isacharequal}\ n\ {\isacharparenleft}fst\ {\isacharparenleft}iedges\ G\ x{\isacharparenright}{\isacharparenright}\ {\isacharplus}\ {\isadigit{1}}{\isacharparenright}{\isachardoublequoteclose}\isanewline
+\ \ \ \ \ \ \isacommand{then}\isamarkupfalse%
+\ \isacommand{have}\isamarkupfalse%
+\ {\isachardoublequoteopen}{\isasymexists}x{\isasymin}{\isacharbraceleft}{\isadigit{0}}{\isachardot}{\isachardot}{\isacharless}iedge{\isacharunderscore}cnt\ G{\isacharbraceright}{\isachardot}\ p\ i\ {\isacharequal}\ Some\ x\ {\isasymand}\ snd\ {\isacharparenleft}iedges\ G\ x{\isacharparenright}\ {\isacharequal}\ i\ {\isasymand}\ n\ i\ {\isacharequal}\ n\ {\isacharparenleft}fst\ {\isacharparenleft}iedges\ G\ x{\isacharparenright}{\isacharparenright}\ {\isacharplus}\ {\isadigit{1}}{\isachardoublequoteclose}\isanewline
+\ \ \ \ \ \ \isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}case{\isacharunderscore}tac\ {\isachardoublequoteopen}p\ i{\isachardoublequoteclose}{\isacharparenright}\ auto\ \isacommand{{\isacharbraceright}}\isamarkupfalse%
+\isanewline
+\ \ \ \ \isacommand{then}\isamarkupfalse%
+\ \isacommand{show}\isamarkupfalse%
+\ {\isacharquery}thesis\isanewline
+\ \ \ \ \ \ \isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}auto\ simp{\isacharcolon}\ parent{\isacharunderscore}num{\isacharunderscore}assms{\isacharunderscore}inv{\isacharunderscore}def{\isacharparenright}\isanewline
+\ \ \isacommand{qed}\isamarkupfalse%
+\isanewline
+\isacommand{ultimately}\isamarkupfalse%
+\isanewline
+\isacommand{show}\isamarkupfalse%
+\ \ {\isachardoublequoteopen}{\isacharquery}thesis\ G\ r\ p\ n{\isachardoublequoteclose}\isanewline
+\ \ \isacommand{unfolding}\isamarkupfalse%
+\ connected{\isacharunderscore}components{\isacharunderscore}locale{\isacharunderscore}def\ \isanewline
+\ \ connected{\isacharunderscore}components{\isacharunderscore}locale{\isacharunderscore}axioms{\isacharunderscore}def\ \isacommand{by}\isamarkupfalse%
+\ auto\isanewline
+\isacommand{qed}\isamarkupfalse%
+%
+\endisatagproof
+{\isafoldproof}%
+%
+\isadelimproof
+\isanewline
+%
+\endisadelimproof
+\isanewline
+\isacommand{theorem}\isamarkupfalse%
+\ {\isacharparenleft}\isakeyword{in}\ check{\isacharunderscore}connected{\isacharunderscore}impl{\isacharparenright}\ check{\isacharunderscore}connected{\isacharunderscore}eq{\isacharunderscore}locale{\isacharcolon}\isanewline
+\ \ {\isachardoublequoteopen}{\isasymforall}G\ r\ p\ n{\isachardot}\ {\isasymGamma}\ {\isasymturnstile}\isactrlsub t\ {\isasymlbrace}\ {\isasymacute}G\ {\isacharequal}\ G\ {\isasymand}\ {\isasymacute}r\ {\isacharequal}\ r\ {\isasymand}\ {\isasymacute}parent{\isacharunderscore}edge\ {\isacharequal}\ p\ {\isasymand}\ {\isasymacute}num\ {\isacharequal}\ n\ {\isasymrbrace}\isanewline
+\ \ \ \ {\isasymacute}R\ {\isacharcolon}{\isacharequal}{\isacharequal}\ PROC\ check{\isacharunderscore}connected\ {\isacharparenleft}{\isasymacute}G{\isacharcomma}\ {\isasymacute}r{\isacharcomma}\ {\isasymacute}parent{\isacharunderscore}edge{\isacharcomma}\ {\isasymacute}num{\isacharparenright}\isanewline
+\ \ \ \ {\isasymlbrace}\ {\isasymacute}R\ {\isacharequal}\ connected{\isacharunderscore}components{\isacharunderscore}locale\ {\isacharparenleft}abs{\isacharunderscore}IGraph\ G{\isacharparenright}\ n\ p\ r{\isasymrbrace}{\isachardoublequoteclose}\isanewline
+%
+\isadelimproof
+%
+\endisadelimproof
+%
+\isatagproof
+\isacommand{by}\isamarkupfalse%
+\ vcg\ {\isacharparenleft}auto\ simp{\isacharcolon}\ connected{\isacharunderscore}components{\isacharunderscore}locale{\isacharunderscore}eq{\isacharunderscore}invariants{\isacharparenright}%
+\endisatagproof
+{\isafoldproof}%
+%
+\isadelimproof
+\isanewline
+%
+\endisadelimproof
+\isanewline
+\isacommand{lemma}\isamarkupfalse%
+\ connected{\isacharunderscore}components{\isacharunderscore}locale{\isacharunderscore}imp{\isacharunderscore}correct{\isacharcolon}\isanewline
+\ \ \isakeyword{assumes}\ {\isachardoublequoteopen}connected{\isacharunderscore}components{\isacharunderscore}locale\ {\isacharparenleft}abs{\isacharunderscore}IGraph\ G{\isacharparenright}n\ p\ r{\isachardoublequoteclose}\isanewline
+\ \ \isakeyword{assumes}\ {\isachardoublequoteopen}u\ {\isasymin}\ pverts\ {\isacharparenleft}mk{\isacharunderscore}symmetric\ {\isacharparenleft}abs{\isacharunderscore}IGraph\ G{\isacharparenright}{\isacharparenright}{\isachardoublequoteclose}\isanewline
+\ \ \isakeyword{assumes}\ {\isachardoublequoteopen}v\ {\isasymin}\ pverts\ {\isacharparenleft}mk{\isacharunderscore}symmetric\ {\isacharparenleft}abs{\isacharunderscore}IGraph\ G{\isacharparenright}{\isacharparenright}{\isachardoublequoteclose}\isanewline
+\ \ \isakeyword{shows}\ {\isachardoublequoteopen}{\isasymexists}p{\isachardot}\ pre{\isacharunderscore}digraph{\isachardot}apath\ {\isacharparenleft}mk{\isacharunderscore}symmetric\ {\isacharparenleft}abs{\isacharunderscore}IGraph\ G{\isacharparenright}{\isacharparenright}\ u\ p\ v{\isachardoublequoteclose}\isanewline
+%
+\isadelimproof
+%
+\endisadelimproof
+%
+\isatagproof
+\isacommand{proof}\isamarkupfalse%
+\ {\isacharminus}\isanewline
+\ \ \isacommand{interpret}\isamarkupfalse%
+\ S{\isacharcolon}\ pair{\isacharunderscore}wf{\isacharunderscore}digraph\ {\isachardoublequoteopen}mk{\isacharunderscore}symmetric\ {\isacharparenleft}abs{\isacharunderscore}IGraph\ G{\isacharparenright}{\isachardoublequoteclose}\isanewline
+\ \ \ \ \isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}intro\ wf{\isacharunderscore}digraph{\isachardot}wellformed{\isacharunderscore}mk{\isacharunderscore}symmetric\isanewline
+\ \ \ \ \ \ \ \ connected{\isacharunderscore}components{\isacharunderscore}locale{\isachardot}ccl{\isacharunderscore}wellformed{\isacharbrackleft}OF\ assms{\isacharparenleft}{\isadigit{1}}{\isacharparenright}{\isacharbrackright}{\isacharparenright}\isanewline
+\ \ \isacommand{show}\isamarkupfalse%
+\ {\isacharquery}thesis\isanewline
+\ \ \ \ \isacommand{using}\isamarkupfalse%
+\ connected{\isacharunderscore}components{\isacharunderscore}locale{\isachardot}connected{\isacharunderscore}by{\isacharunderscore}path{\isacharbrackleft}OF\ assms{\isacharbrackright}\isanewline
+\ \ \ \ \isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}simp\ only{\isacharcolon}\ S{\isachardot}reachable{\isacharunderscore}apath{\isacharparenright}\isanewline
+\isacommand{qed}\isamarkupfalse%
+%
+\endisatagproof
+{\isafoldproof}%
+%
+\isadelimproof
+\isanewline
+%
+\endisadelimproof
+\isanewline
+\isacommand{theorem}\isamarkupfalse%
+\ {\isacharparenleft}\isakeyword{in}\ check{\isacharunderscore}connected{\isacharunderscore}impl{\isacharparenright}\ check{\isacharunderscore}connected{\isacharunderscore}spec{\isacharcolon}\isanewline
+\ \ {\isachardoublequoteopen}{\isasymAnd}G\ r\ p\ n{\isachardot}\ {\isasymGamma}\ {\isasymturnstile}\isactrlsub t\ {\isasymlbrace}\ {\isasymacute}G\ {\isacharequal}\ G\ {\isasymand}\ {\isasymacute}r\ {\isacharequal}\ r\ {\isasymand}\ {\isasymacute}parent{\isacharunderscore}edge\ {\isacharequal}\ p\ {\isasymand}\ {\isasymacute}num\ {\isacharequal}\ n\ {\isasymrbrace}\isanewline
+\ \ \ \ {\isasymacute}R\ {\isacharcolon}{\isacharequal}{\isacharequal}\ PROC\ check{\isacharunderscore}connected{\isacharparenleft}{\isasymacute}G{\isacharcomma}\ {\isasymacute}r{\isacharcomma}\ {\isasymacute}parent{\isacharunderscore}edge{\isacharcomma}\ {\isasymacute}num{\isacharparenright}\isanewline
+\ \ \ \ {\isasymlbrace}\ {\isasymacute}R\ {\isasymlongrightarrow}\isanewline
+\ \ \ \ \ \ \ \ {\isacharparenleft}{\isasymforall}u\ {\isasymin}\ pverts\ {\isacharparenleft}mk{\isacharunderscore}symmetric\ {\isacharparenleft}abs{\isacharunderscore}IGraph\ G{\isacharparenright}{\isacharparenright}{\isachardot}\isanewline
+\ \ \ \ \ \ \ \ \ \ {\isasymforall}v\ {\isasymin}\ pverts\ {\isacharparenleft}mk{\isacharunderscore}symmetric\ {\isacharparenleft}abs{\isacharunderscore}IGraph\ G{\isacharparenright}{\isacharparenright}{\isachardot}\ \isanewline
+\ \ \ \ \ \ \ \ \ \ {\isasymexists}p{\isachardot}\ pre{\isacharunderscore}digraph{\isachardot}apath\ {\isacharparenleft}mk{\isacharunderscore}symmetric\ {\isacharparenleft}abs{\isacharunderscore}IGraph\ G{\isacharparenright}{\isacharparenright}\ u\ p\ v{\isacharparenright}{\isasymrbrace}{\isachardoublequoteclose}\isanewline
+%
+\isadelimproof
+%
+\endisadelimproof
+%
+\isatagproof
+\isacommand{using}\isamarkupfalse%
+\ connected{\isacharunderscore}components{\isacharunderscore}locale{\isacharunderscore}eq{\isacharunderscore}invariants\isanewline
+\ \ \ \ \ \ connected{\isacharunderscore}components{\isacharunderscore}locale{\isacharunderscore}imp{\isacharunderscore}correct\ \isanewline
+\isacommand{by}\isamarkupfalse%
+\ vcg\ metis%
+\endisatagproof
+{\isafoldproof}%
+%
+\isadelimproof
+\isanewline
+%
+\endisadelimproof
+%
+\isadelimtheory
+\isanewline
+%
+\endisadelimtheory
+%
+\isatagtheory
+\isacommand{end}\isamarkupfalse%
+%
+\endisatagtheory
+{\isafoldtheory}%
+%
+\isadelimtheory
+%
+\endisadelimtheory
+\end{isabellebody}%
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "root"
+%%% End:

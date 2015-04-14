@@ -1,0 +1,941 @@
+%
+\begin{isabellebody}%
+\def\isabellecontext{Matching}%
+%
+\isadelimtheory
+%
+\endisadelimtheory
+%
+\isatagtheory
+\isacommand{theory}\isamarkupfalse%
+\ Matching\isanewline
+\isakeyword{imports}\isanewline
+\ \ Main\isanewline
+\ \ Parity\isanewline
+\ \ {\isachardoublequoteopen}{\isachardot}{\isachardot}{\isacharslash}Graph{\isacharunderscore}Theory{\isacharslash}Graph{\isacharunderscore}Theory{\isachardoublequoteclose}\isanewline
+\isakeyword{begin}%
+\endisatagtheory
+{\isafoldtheory}%
+%
+\isadelimtheory
+\isanewline
+%
+\endisadelimtheory
+\isanewline
+\isanewline
+\isacommand{type{\isacharunderscore}synonym}\isamarkupfalse%
+\ label\ {\isacharequal}\ nat\isanewline
+\isanewline
+\isacommand{definition}\isamarkupfalse%
+\ disjoint{\isacharunderscore}arcs\ {\isacharcolon}{\isacharcolon}\ {\isachardoublequoteopen}{\isacharparenleft}{\isacharprime}a{\isacharcomma}\ {\isacharprime}b{\isacharparenright}\ pre{\isacharunderscore}digraph\ {\isacharequal}{\isachargreater}\ {\isacharprime}b\ {\isasymRightarrow}\ {\isacharprime}b\ {\isasymRightarrow}\ bool{\isachardoublequoteclose}\ \isakeyword{where}\isanewline
+\ \ {\isachardoublequoteopen}disjoint{\isacharunderscore}arcs\ G\ e{\isadigit{1}}\ e{\isadigit{2}}\ {\isacharequal}\ {\isacharparenleft}\isanewline
+\ \ \ \ \ tail\ G\ e{\isadigit{1}}\ {\isasymnoteq}\ tail\ G\ e{\isadigit{2}}\ {\isasymand}\ tail\ G\ e{\isadigit{1}}\ {\isasymnoteq}\ head\ G\ e{\isadigit{2}}\ {\isasymand}\ \isanewline
+\ \ \ \ \ head\ G\ e{\isadigit{1}}\ {\isasymnoteq}\ tail\ G\ e{\isadigit{2}}\ {\isasymand}\ head\ G\ e{\isadigit{1}}\ {\isasymnoteq}\ head\ G\ e{\isadigit{2}}{\isacharparenright}{\isachardoublequoteclose}\isanewline
+\isanewline
+\isacommand{definition}\isamarkupfalse%
+\ matching\ {\isacharcolon}{\isacharcolon}\ {\isachardoublequoteopen}{\isacharparenleft}{\isacharprime}a{\isacharcomma}\ {\isacharprime}b{\isacharparenright}\ pre{\isacharunderscore}digraph\ {\isasymRightarrow}\ {\isacharprime}b\ set\ {\isasymRightarrow}\ bool{\isachardoublequoteclose}\ \isakeyword{where}\isanewline
+\ \ {\isachardoublequoteopen}matching\ G\ M\ {\isacharequal}\ {\isacharparenleft}M\ {\isasymsubseteq}\ arcs\ G\ {\isasymand}\ {\isacharparenleft}{\isasymforall}e{\isadigit{1}}\ {\isasymin}\ M{\isachardot}\ {\isasymforall}e{\isadigit{2}}\ {\isasymin}\ M{\isachardot}\ e{\isadigit{1}}\ {\isasymnoteq}\ e{\isadigit{2}}\ {\isasymlongrightarrow}\ disjoint{\isacharunderscore}arcs\ G\ e{\isadigit{1}}\ e{\isadigit{2}}{\isacharparenright}{\isacharparenright}{\isachardoublequoteclose}\isanewline
+\isanewline
+\isacommand{definition}\isamarkupfalse%
+\ OSC\ {\isacharcolon}{\isacharcolon}\ {\isachardoublequoteopen}{\isacharparenleft}{\isacharprime}a{\isacharcomma}\ {\isacharprime}b{\isacharparenright}\ pre{\isacharunderscore}digraph\ {\isasymRightarrow}\ {\isacharparenleft}{\isacharprime}a\ {\isasymRightarrow}\ label{\isacharparenright}\ {\isasymRightarrow}\ bool{\isachardoublequoteclose}\ \isakeyword{where}\isanewline
+\ \ {\isachardoublequoteopen}OSC\ G\ L\ {\isacharequal}\ {\isacharparenleft}\isanewline
+\ \ \ \ \ {\isasymforall}e\ {\isasymin}\ arcs\ G{\isachardot}\isanewline
+\ \ \ \ \ \ \ L\ {\isacharparenleft}tail\ G\ e{\isacharparenright}\ {\isacharequal}\ {\isadigit{1}}\ {\isasymor}\ L\ {\isacharparenleft}head\ G\ e{\isacharparenright}\ {\isacharequal}\ {\isadigit{1}}\ {\isasymor}\ \isanewline
+\ \ \ \ \ \ \ L\ {\isacharparenleft}tail\ G\ e{\isacharparenright}\ {\isacharequal}\ L\ {\isacharparenleft}head\ G\ e{\isacharparenright}\ {\isasymand}\ L\ {\isacharparenleft}tail\ G\ e{\isacharparenright}\ {\isasymge}\ {\isadigit{2}}{\isacharparenright}{\isachardoublequoteclose}\isanewline
+\isanewline
+\isacommand{definition}\isamarkupfalse%
+\ weight{\isacharcolon}{\isacharcolon}\ {\isachardoublequoteopen}label\ set\ {\isasymRightarrow}\ {\isacharparenleft}label\ {\isasymRightarrow}\ nat{\isacharparenright}\ {\isasymRightarrow}\ nat{\isachardoublequoteclose}\ \isakeyword{where}\isanewline
+\ \ {\isachardoublequoteopen}weight\ LV\ f\ {\isasymequiv}\ f\ {\isadigit{1}}\ {\isacharplus}\ {\isacharparenleft}{\isasymSum}i{\isasymin}LV{\isachardot}\ {\isacharparenleft}f\ i{\isacharparenright}\ div\ {\isadigit{2}}{\isacharparenright}{\isachardoublequoteclose}\isanewline
+\isanewline
+\isacommand{definition}\isamarkupfalse%
+\ N\ {\isacharcolon}{\isacharcolon}\ {\isachardoublequoteopen}{\isacharprime}a\ set\ {\isasymRightarrow}\ {\isacharparenleft}{\isacharprime}a\ {\isasymRightarrow}\ label{\isacharparenright}\ {\isasymRightarrow}\ label\ {\isasymRightarrow}\ nat{\isachardoublequoteclose}\ \isakeyword{where}\isanewline
+\ \ {\isachardoublequoteopen}N\ V\ L\ i\ {\isasymequiv}\ card\ {\isacharbraceleft}v\ {\isasymin}\ V{\isachardot}\ L\ v\ {\isacharequal}\ i{\isacharbraceright}{\isachardoublequoteclose}\isanewline
+\isanewline
+\isacommand{locale}\isamarkupfalse%
+\ matching{\isacharunderscore}locale\ {\isacharequal}\ digraph\ {\isacharplus}\isanewline
+\ \ \isakeyword{fixes}\ maxM\ {\isacharcolon}{\isacharcolon}\ {\isachardoublequoteopen}{\isacharprime}b\ set{\isachardoublequoteclose}\isanewline
+\ \ \isakeyword{fixes}\ L\ {\isacharcolon}{\isacharcolon}\ {\isachardoublequoteopen}{\isacharprime}a\ {\isasymRightarrow}\ label{\isachardoublequoteclose}\isanewline
+\ \ \isakeyword{assumes}\ matching{\isacharcolon}\ {\isachardoublequoteopen}matching\ G\ maxM{\isachardoublequoteclose}\ \isanewline
+\ \ \isakeyword{assumes}\ OSC{\isacharcolon}\ {\isachardoublequoteopen}OSC\ G\ L{\isachardoublequoteclose}\isanewline
+\ \ \isakeyword{assumes}\ weight{\isacharcolon}\ {\isachardoublequoteopen}card\ maxM\ {\isacharequal}\ weight\ {\isacharbraceleft}i\ {\isasymin}\ L\ {\isacharbackquote}\ verts\ G{\isachardot}\ i\ {\isachargreater}\ {\isadigit{1}}{\isacharbraceright}\ {\isacharparenleft}N\ {\isacharparenleft}verts\ G{\isacharparenright}\ L{\isacharparenright}{\isachardoublequoteclose}\isanewline
+\isanewline
+\isacommand{sublocale}\isamarkupfalse%
+\ matching{\isacharunderscore}locale\ {\isasymsubseteq}\ digraph%
+\isadelimproof
+\ %
+\endisadelimproof
+%
+\isatagproof
+\isacommand{{\isachardot}{\isachardot}}\isamarkupfalse%
+%
+\endisatagproof
+{\isafoldproof}%
+%
+\isadelimproof
+%
+\endisadelimproof
+\isanewline
+\isanewline
+\isacommand{context}\isamarkupfalse%
+\ matching{\isacharunderscore}locale\ \isakeyword{begin}\isanewline
+\isanewline
+\isacommand{definition}\isamarkupfalse%
+\ degree\ {\isacharcolon}{\isacharcolon}\ {\isachardoublequoteopen}{\isacharprime}a\ {\isasymRightarrow}\ nat{\isachardoublequoteclose}\ \isakeyword{where}\isanewline
+\ \ {\isachardoublequoteopen}degree\ v\ {\isasymequiv}\ card\ {\isacharbraceleft}e\ {\isasymin}\ arcs\ G{\isachardot}\ tail\ G\ e\ {\isacharequal}\ v\ {\isasymor}\ head\ G\ e\ {\isacharequal}\ v{\isacharbraceright}{\isachardoublequoteclose}\isanewline
+\isanewline
+\isacommand{definition}\isamarkupfalse%
+\ edge{\isacharunderscore}as{\isacharunderscore}set\ {\isacharcolon}{\isacharcolon}\ {\isachardoublequoteopen}{\isacharprime}b\ {\isasymRightarrow}\ {\isacharprime}a\ set{\isachardoublequoteclose}\ \isakeyword{where}\isanewline
+\ \ {\isachardoublequoteopen}edge{\isacharunderscore}as{\isacharunderscore}set\ e\ {\isasymequiv}\ {\isacharbraceleft}tail\ G\ e{\isacharcomma}\ head\ G\ e{\isacharbraceright}{\isachardoublequoteclose}\isanewline
+\isanewline
+\isacommand{definition}\isamarkupfalse%
+\ matched\ {\isacharcolon}{\isacharcolon}\ {\isachardoublequoteopen}{\isacharprime}b\ set\ {\isasymRightarrow}\ {\isacharprime}a\ {\isasymRightarrow}\ bool{\isachardoublequoteclose}\ \isakeyword{where}\isanewline
+\ \ {\isachardoublequoteopen}matched\ M\ v\ {\isasymequiv}\ v\ {\isasymin}\ {\isasymUnion}\ {\isacharparenleft}edge{\isacharunderscore}as{\isacharunderscore}set\ {\isacharbackquote}\ M{\isacharparenright}{\isachardoublequoteclose}\isanewline
+\isanewline
+\isacommand{definition}\isamarkupfalse%
+\ free\ {\isacharcolon}{\isacharcolon}\ {\isachardoublequoteopen}{\isacharprime}b\ set\ {\isasymRightarrow}\ {\isacharprime}a\ {\isasymRightarrow}\ bool{\isachardoublequoteclose}\ \isakeyword{where}\isanewline
+\ \ {\isachardoublequoteopen}free\ M\ v\ {\isasymequiv}\ {\isasymnot}\ matched\ M\ v{\isachardoublequoteclose}\isanewline
+\isanewline
+\isanewline
+\isacommand{definition}\isamarkupfalse%
+\ matching{\isacharunderscore}i\ {\isacharcolon}{\isacharcolon}\ {\isachardoublequoteopen}nat\ {\isasymRightarrow}\ {\isacharprime}b\ set\ {\isasymRightarrow}\ {\isacharprime}b\ set{\isachardoublequoteclose}\ \isakeyword{where}\isanewline
+\ \ {\isachardoublequoteopen}matching{\isacharunderscore}i\ i\ M\ {\isasymequiv}\ {\isacharbraceleft}e\ {\isasymin}\ M{\isachardot}\ i{\isacharequal}{\isadigit{1}}\ {\isasymand}\ {\isacharparenleft}L\ {\isacharparenleft}tail\ G\ e{\isacharparenright}\ {\isacharequal}\ i\ {\isasymor}\ L\ {\isacharparenleft}head\ G\ e{\isacharparenright}\ {\isacharequal}\ i{\isacharparenright}\ \isanewline
+\ \ {\isasymor}\ i{\isachargreater}{\isadigit{1}}\ {\isasymand}\ L\ {\isacharparenleft}tail\ G\ e{\isacharparenright}\ {\isacharequal}\ i\ {\isasymand}\ L\ {\isacharparenleft}head\ G\ e{\isacharparenright}\ {\isacharequal}\ i{\isacharbraceright}{\isachardoublequoteclose}\isanewline
+\isanewline
+\isacommand{definition}\isamarkupfalse%
+\ V{\isacharunderscore}i{\isacharcolon}{\isacharcolon}\ {\isachardoublequoteopen}nat\ {\isasymRightarrow}\ {\isacharprime}b\ set\ {\isasymRightarrow}\ {\isacharprime}a\ set{\isachardoublequoteclose}\ \isakeyword{where}\isanewline
+\ \ {\isachardoublequoteopen}V{\isacharunderscore}i\ i\ M\ {\isasymequiv}\ {\isasymUnion}\ {\isacharparenleft}edge{\isacharunderscore}as{\isacharunderscore}set\ {\isacharbackquote}\ matching{\isacharunderscore}i\ i\ M{\isacharparenright}{\isachardoublequoteclose}\isanewline
+\isanewline
+\isacommand{definition}\isamarkupfalse%
+\ endpoint{\isacharunderscore}inV\ {\isacharcolon}{\isacharcolon}\ {\isachardoublequoteopen}{\isacharprime}a\ set\ {\isasymRightarrow}\ {\isacharprime}b\ {\isasymRightarrow}\ {\isacharprime}a{\isachardoublequoteclose}\ \isakeyword{where}\ \isanewline
+\ \ {\isachardoublequoteopen}endpoint{\isacharunderscore}inV\ V\ e\ {\isasymequiv}\ \ if\ tail\ G\ e\ {\isasymin}\ V\ then\ tail\ G\ e\ else\ head\ G\ e{\isachardoublequoteclose}\ \isanewline
+\isanewline
+\isacommand{definition}\isamarkupfalse%
+\ relevant{\isacharunderscore}endpoint\ {\isacharcolon}{\isacharcolon}\ {\isachardoublequoteopen}{\isacharprime}b\ {\isasymRightarrow}\ {\isacharprime}a{\isachardoublequoteclose}\ \isakeyword{where}\ \isanewline
+\ \ {\isachardoublequoteopen}relevant{\isacharunderscore}endpoint\ e\ {\isasymequiv}\ if\ L\ {\isacharparenleft}tail\ G\ e{\isacharparenright}\ {\isacharequal}\ {\isadigit{1}}\ then\ tail\ G\ e\ else\ head\ G\ e{\isachardoublequoteclose}\isanewline
+\isanewline
+\isanewline
+\isacommand{lemma}\isamarkupfalse%
+\ definition{\isacharunderscore}of{\isacharunderscore}range{\isacharcolon}\isanewline
+\ \ {\isachardoublequoteopen}endpoint{\isacharunderscore}inV\ V{\isadigit{1}}\ {\isacharbackquote}\ matching{\isacharunderscore}i\ {\isadigit{1}}\ M\ {\isacharequal}\ \isanewline
+\ \ {\isacharbraceleft}\ v{\isachardot}\ {\isasymexists}\ e\ {\isasymin}\ matching{\isacharunderscore}i\ {\isadigit{1}}\ M{\isachardot}\ endpoint{\isacharunderscore}inV\ V{\isadigit{1}}\ e\ {\isacharequal}\ v\ {\isacharbraceright}{\isachardoublequoteclose}%
+\isadelimproof
+\ %
+\endisadelimproof
+%
+\isatagproof
+\isacommand{by}\isamarkupfalse%
+\ auto%
+\endisatagproof
+{\isafoldproof}%
+%
+\isadelimproof
+%
+\endisadelimproof
+\isanewline
+\isanewline
+\isacommand{lemma}\isamarkupfalse%
+\ matching{\isacharunderscore}i{\isacharunderscore}arcs{\isacharunderscore}as{\isacharunderscore}sets{\isacharcolon}\isanewline
+\ \ {\isachardoublequoteopen}edge{\isacharunderscore}as{\isacharunderscore}set\ {\isacharbackquote}\ matching{\isacharunderscore}i\ i\ M\ {\isacharequal}\ \isanewline
+\ \ {\isacharbraceleft}\ e{\isadigit{1}}{\isachardot}\ {\isasymexists}\ e\ {\isasymin}\ matching{\isacharunderscore}i\ i\ M{\isachardot}\ edge{\isacharunderscore}as{\isacharunderscore}set\ e\ {\isacharequal}\ e{\isadigit{1}}{\isacharbraceright}{\isachardoublequoteclose}%
+\isadelimproof
+\ %
+\endisadelimproof
+%
+\isatagproof
+\isacommand{by}\isamarkupfalse%
+\ auto%
+\endisatagproof
+{\isafoldproof}%
+%
+\isadelimproof
+%
+\endisadelimproof
+\isanewline
+\isanewline
+\isacommand{lemma}\isamarkupfalse%
+\ matching{\isacharunderscore}disjointness{\isacharcolon}\isanewline
+\ \ \isakeyword{assumes}\ {\isachardoublequoteopen}matching\ G\ M{\isachardoublequoteclose}\isanewline
+\ \ \isakeyword{assumes}\ {\isachardoublequoteopen}e{\isadigit{1}}\ {\isasymin}\ M{\isachardoublequoteclose}\isanewline
+\ \ \isakeyword{assumes}\ {\isachardoublequoteopen}e{\isadigit{2}}\ {\isasymin}\ M{\isachardoublequoteclose}\isanewline
+\ \ \isakeyword{assumes}\ {\isachardoublequoteopen}e{\isadigit{1}}\ {\isasymnoteq}\ e{\isadigit{2}}{\isachardoublequoteclose}\isanewline
+\ \ \isakeyword{shows}\ \ {\isachardoublequoteopen}edge{\isacharunderscore}as{\isacharunderscore}set\ e{\isadigit{1}}\ {\isasyminter}\ edge{\isacharunderscore}as{\isacharunderscore}set\ e{\isadigit{2}}\ {\isacharequal}\ {\isacharbraceleft}{\isacharbraceright}{\isachardoublequoteclose}\isanewline
+%
+\isadelimproof
+\ \ %
+\endisadelimproof
+%
+\isatagproof
+\isacommand{using}\isamarkupfalse%
+\ assms\ \isanewline
+\ \ \isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}auto\ simp\ add{\isacharcolon}\ edge{\isacharunderscore}as{\isacharunderscore}set{\isacharunderscore}def\ disjoint{\isacharunderscore}arcs{\isacharunderscore}def\ matching{\isacharunderscore}def{\isacharparenright}%
+\endisatagproof
+{\isafoldproof}%
+%
+\isadelimproof
+\isanewline
+%
+\endisadelimproof
+\isanewline
+\isacommand{lemma}\isamarkupfalse%
+\ expand{\isacharunderscore}set{\isacharunderscore}containment{\isacharcolon}\isanewline
+\ \ \isakeyword{assumes}\ {\isachardoublequoteopen}matching\ G\ M{\isachardoublequoteclose}\isanewline
+\ \ \isakeyword{assumes}\ {\isachardoublequoteopen}e\ {\isasymin}\ M{\isachardoublequoteclose}\isanewline
+\ \ \isakeyword{shows}\ {\isachardoublequoteopen}e\ {\isasymin}\ arcs\ G{\isachardoublequoteclose}\isanewline
+%
+\isadelimproof
+\ \ %
+\endisadelimproof
+%
+\isatagproof
+\isacommand{using}\isamarkupfalse%
+\ assms\isanewline
+\ \ \isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}auto\ simp\ add{\isacharcolon}matching{\isacharunderscore}def{\isacharparenright}%
+\endisatagproof
+{\isafoldproof}%
+%
+\isadelimproof
+\isanewline
+%
+\endisadelimproof
+\isanewline
+\isacommand{theorem}\isamarkupfalse%
+\ injectivity{\isacharcolon}\isanewline
+\ \ \isakeyword{assumes}\ is{\isacharunderscore}m{\isacharcolon}\ {\isachardoublequoteopen}matching\ G\ M{\isachardoublequoteclose}\isanewline
+\ \ \isakeyword{assumes}\ e{\isadigit{1}}{\isacharunderscore}in{\isacharunderscore}M{\isadigit{1}}{\isacharcolon}\ {\isachardoublequoteopen}e{\isadigit{1}}\ {\isasymin}\ matching{\isacharunderscore}i\ {\isadigit{1}}\ M{\isachardoublequoteclose}\isanewline
+\ \ \ \ \ \ \isakeyword{and}\ e{\isadigit{2}}{\isacharunderscore}in{\isacharunderscore}M{\isadigit{1}}{\isacharcolon}\ {\isachardoublequoteopen}e{\isadigit{2}}\ {\isasymin}\ matching{\isacharunderscore}i\ {\isadigit{1}}\ M{\isachardoublequoteclose}\isanewline
+\ \ \isakeyword{assumes}\ diff{\isacharcolon}\ {\isachardoublequoteopen}{\isacharparenleft}e{\isadigit{1}}\ {\isasymnoteq}\ e{\isadigit{2}}{\isacharparenright}{\isachardoublequoteclose}\isanewline
+\ \ \isakeyword{shows}\ {\isachardoublequoteopen}endpoint{\isacharunderscore}inV\ {\isacharbraceleft}v\ {\isasymin}\ V{\isachardot}\ L\ v\ {\isacharequal}\ {\isadigit{1}}{\isacharbraceright}\ e{\isadigit{1}}\ {\isasymnoteq}\ endpoint{\isacharunderscore}inV\ {\isacharbraceleft}v\ {\isasymin}\ V{\isachardot}\ L\ v\ {\isacharequal}\ {\isadigit{1}}{\isacharbraceright}\ e{\isadigit{2}}{\isachardoublequoteclose}\isanewline
+%
+\isadelimproof
+%
+\endisadelimproof
+%
+\isatagproof
+\isacommand{proof}\isamarkupfalse%
+\ {\isacharminus}\isanewline
+\ \ \isacommand{from}\isamarkupfalse%
+\ e{\isadigit{1}}{\isacharunderscore}in{\isacharunderscore}M{\isadigit{1}}\ \isacommand{have}\isamarkupfalse%
+\ {\isachardoublequoteopen}e{\isadigit{1}}\ {\isasymin}\ M{\isachardoublequoteclose}\ \isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}auto\ simp\ add{\isacharcolon}\ matching{\isacharunderscore}i{\isacharunderscore}def{\isacharparenright}\isanewline
+\ \ \isacommand{moreover}\isamarkupfalse%
+\isanewline
+\ \ \isacommand{from}\isamarkupfalse%
+\ e{\isadigit{2}}{\isacharunderscore}in{\isacharunderscore}M{\isadigit{1}}\ \isacommand{have}\isamarkupfalse%
+\ {\isachardoublequoteopen}e{\isadigit{2}}\ {\isasymin}\ M{\isachardoublequoteclose}\ \isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}auto\ simp\ add{\isacharcolon}\ matching{\isacharunderscore}i{\isacharunderscore}def{\isacharparenright}\isanewline
+\ \ \isacommand{ultimately}\isamarkupfalse%
+\isanewline
+\ \ \isacommand{have}\isamarkupfalse%
+\ disjoint{\isacharunderscore}edge{\isacharunderscore}sets{\isacharcolon}\ {\isachardoublequoteopen}edge{\isacharunderscore}as{\isacharunderscore}set\ e{\isadigit{1}}\ {\isasyminter}\ edge{\isacharunderscore}as{\isacharunderscore}set\ e{\isadigit{2}}\ {\isacharequal}\ {\isacharbraceleft}{\isacharbraceright}{\isachardoublequoteclose}\ \isanewline
+\ \ \ \ \isacommand{using}\isamarkupfalse%
+\ diff\ is{\isacharunderscore}m\ matching{\isacharunderscore}disjointness\ \isacommand{by}\isamarkupfalse%
+\ fast\isanewline
+\ \ \isacommand{then}\isamarkupfalse%
+\ \isacommand{show}\isamarkupfalse%
+\ {\isacharquery}thesis\ \isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}auto\ simp\ add{\isacharcolon}\ edge{\isacharunderscore}as{\isacharunderscore}set{\isacharunderscore}def\ endpoint{\isacharunderscore}inV{\isacharunderscore}def{\isacharparenright}\isanewline
+\isacommand{qed}\isamarkupfalse%
+%
+\endisatagproof
+{\isafoldproof}%
+%
+\isadelimproof
+\isanewline
+%
+\endisadelimproof
+\isanewline
+\isacommand{lemma}\isamarkupfalse%
+\ card{\isacharunderscore}M{\isadigit{1}}{\isacharunderscore}le{\isacharunderscore}NVL{\isadigit{1}}{\isacharcolon}\ \isanewline
+\ \ \isakeyword{assumes}\ {\isachardoublequoteopen}matching\ G\ M{\isachardoublequoteclose}\isanewline
+\ \ \isakeyword{shows}\ {\isachardoublequoteopen}card\ {\isacharparenleft}matching{\isacharunderscore}i\ {\isadigit{1}}\ M{\isacharparenright}\ {\isasymle}\ N\ {\isacharparenleft}verts\ G{\isacharparenright}\ L\ {\isadigit{1}}{\isachardoublequoteclose}\isanewline
+%
+\isadelimproof
+%
+\endisadelimproof
+%
+\isatagproof
+\isacommand{proof}\isamarkupfalse%
+\ {\isacharminus}\isanewline
+\ \ \isacommand{let}\isamarkupfalse%
+\ {\isacharquery}f\ {\isacharequal}\ {\isachardoublequoteopen}endpoint{\isacharunderscore}inV\ {\isacharbraceleft}v\ {\isasymin}\ verts\ G{\isachardot}\ L\ v\ {\isacharequal}\ {\isadigit{1}}{\isacharbraceright}{\isachardoublequoteclose}\isanewline
+\ \ \isacommand{let}\isamarkupfalse%
+\ {\isacharquery}A\ {\isacharequal}\ {\isachardoublequoteopen}matching{\isacharunderscore}i\ {\isadigit{1}}\ M{\isachardoublequoteclose}\isanewline
+\ \ \isacommand{let}\isamarkupfalse%
+\ {\isacharquery}B\ {\isacharequal}\ {\isachardoublequoteopen}{\isacharbraceleft}v\ {\isasymin}\ verts\ G{\isachardot}\ L\ v\ {\isacharequal}\ {\isadigit{1}}{\isacharbraceright}{\isachardoublequoteclose}\isanewline
+\ \ \isacommand{have}\isamarkupfalse%
+\ {\isachardoublequoteopen}inj{\isacharunderscore}on\ {\isacharquery}f\ {\isacharquery}A{\isachardoublequoteclose}\ \isacommand{using}\isamarkupfalse%
+\ assms\ injectivity\isanewline
+\ \ \ \ \isacommand{unfolding}\isamarkupfalse%
+\ inj{\isacharunderscore}on{\isacharunderscore}def\ \isacommand{by}\isamarkupfalse%
+\ blast\isanewline
+\ \ \isacommand{moreover}\isamarkupfalse%
+\ \isacommand{have}\isamarkupfalse%
+\ {\isachardoublequoteopen}{\isacharquery}f\ {\isacharbackquote}\ {\isacharquery}A\ {\isasymsubseteq}\ {\isacharquery}B{\isachardoublequoteclose}\isanewline
+\ \ \isacommand{proof}\isamarkupfalse%
+\ {\isacharminus}\isanewline
+\ \ \ \ \isacommand{{\isacharbraceleft}}\isamarkupfalse%
+\isanewline
+\ \ \ \ \ \ \isacommand{fix}\isamarkupfalse%
+\ e\ \isacommand{assume}\isamarkupfalse%
+\ {\isachardoublequoteopen}e\ {\isasymin}\ matching{\isacharunderscore}i\ {\isadigit{1}}\ M{\isachardoublequoteclose}\isanewline
+\ \ \ \ \ \ \isacommand{hence}\isamarkupfalse%
+\ {\isachardoublequoteopen}e\ {\isasymin}\ arcs\ G{\isachardoublequoteclose}\isanewline
+\ \ \ \ \ \ \ \ \isacommand{using}\isamarkupfalse%
+\ assms\ \isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}auto\ simp\ add{\isacharcolon}\ matching{\isacharunderscore}def\ matching{\isacharunderscore}i{\isacharunderscore}def{\isacharparenright}\isanewline
+\ \ \ \ \ \ \isacommand{with}\isamarkupfalse%
+\ {\isacharbackquoteopen}e\ {\isasymin}\ matching{\isacharunderscore}i\ {\isadigit{1}}\ M{\isacharbackquoteclose}\isanewline
+\ \ \ \ \ \ \isacommand{have}\isamarkupfalse%
+\ {\isachardoublequoteopen}endpoint{\isacharunderscore}inV\ {\isacharbraceleft}v\ {\isasymin}\ verts\ G{\isachardot}\ L\ v\ {\isacharequal}\ {\isadigit{1}}{\isacharbraceright}\ e\ {\isasymin}\ {\isacharbraceleft}v\ {\isasymin}\ verts\ G{\isachardot}\ L\ v\ {\isacharequal}\ {\isadigit{1}}{\isacharbraceright}{\isachardoublequoteclose}\isanewline
+\ \ \ \ \ \ \ \ \isacommand{using}\isamarkupfalse%
+\ assms\isanewline
+\ \ \ \ \ \ \ \ \isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}auto\ simp\ add{\isacharcolon}\ endpoint{\isacharunderscore}inV{\isacharunderscore}def\ matching{\isacharunderscore}i{\isacharunderscore}def\ intro{\isacharcolon}\ tail{\isacharunderscore}in{\isacharunderscore}verts\ head{\isacharunderscore}in{\isacharunderscore}verts{\isacharparenright}\isanewline
+\ \ \ \ \isacommand{{\isacharbraceright}}\isamarkupfalse%
+\isanewline
+\ \ \ \ \isacommand{then}\isamarkupfalse%
+\ \isacommand{show}\isamarkupfalse%
+\ {\isacharquery}thesis\ \isacommand{using}\isamarkupfalse%
+\ assms\ definition{\isacharunderscore}of{\isacharunderscore}range\ \isacommand{by}\isamarkupfalse%
+\ blast\isanewline
+\ \ \isacommand{qed}\isamarkupfalse%
+\isanewline
+\ \ \isacommand{moreover}\isamarkupfalse%
+\ \isacommand{have}\isamarkupfalse%
+\ {\isachardoublequoteopen}finite\ {\isacharquery}B{\isachardoublequoteclose}\ \isacommand{by}\isamarkupfalse%
+\ simp\isanewline
+\ \ \isacommand{ultimately}\isamarkupfalse%
+\ \isacommand{show}\isamarkupfalse%
+\ {\isacharquery}thesis\ \isacommand{unfolding}\isamarkupfalse%
+\ N{\isacharunderscore}def\ \isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}rule\ card{\isacharunderscore}inj{\isacharunderscore}on{\isacharunderscore}le{\isacharparenright}\isanewline
+\isacommand{qed}\isamarkupfalse%
+%
+\endisatagproof
+{\isafoldproof}%
+%
+\isadelimproof
+\isanewline
+%
+\endisadelimproof
+\isanewline
+\isacommand{lemma}\isamarkupfalse%
+\ edge{\isacharunderscore}as{\isacharunderscore}set{\isacharunderscore}inj{\isacharunderscore}on{\isacharunderscore}Mi{\isacharcolon}\ \isanewline
+\ \ \isakeyword{assumes}\ {\isachardoublequoteopen}matching\ G\ M{\isachardoublequoteclose}\isanewline
+\ \ \isakeyword{shows}\ {\isachardoublequoteopen}inj{\isacharunderscore}on\ edge{\isacharunderscore}as{\isacharunderscore}set\ {\isacharparenleft}matching{\isacharunderscore}i\ i\ M{\isacharparenright}{\isachardoublequoteclose}\isanewline
+%
+\isadelimproof
+\ \ %
+\endisadelimproof
+%
+\isatagproof
+\isacommand{using}\isamarkupfalse%
+\ assms\isanewline
+\ \ \isacommand{unfolding}\isamarkupfalse%
+\ inj{\isacharunderscore}on{\isacharunderscore}def\ edge{\isacharunderscore}as{\isacharunderscore}set{\isacharunderscore}def\ matching{\isacharunderscore}def\isanewline
+\ \ \ \ disjoint{\isacharunderscore}arcs{\isacharunderscore}def\ matching{\isacharunderscore}i{\isacharunderscore}def\ \isanewline
+\ \ \isacommand{by}\isamarkupfalse%
+\ blast%
+\endisatagproof
+{\isafoldproof}%
+%
+\isadelimproof
+\isanewline
+%
+\endisadelimproof
+\isanewline
+\isacommand{lemma}\isamarkupfalse%
+\ card{\isacharunderscore}edge{\isacharunderscore}as{\isacharunderscore}set{\isacharunderscore}Mi{\isacharunderscore}twice{\isacharunderscore}card{\isacharunderscore}partitions{\isacharcolon}\isanewline
+\ \ \isakeyword{assumes}\ {\isachardoublequoteopen}matching\ G\ M\ {\isasymand}\ i\ {\isachargreater}\ {\isadigit{1}}{\isachardoublequoteclose}\isanewline
+\ \ \isakeyword{shows}\ {\isachardoublequoteopen}{\isadigit{2}}\ {\isacharasterisk}\ card\ {\isacharparenleft}edge{\isacharunderscore}as{\isacharunderscore}set{\isacharbackquote}matching{\isacharunderscore}i\ i\ M{\isacharparenright}\ \isanewline
+\ \ {\isacharequal}\ card\ {\isacharparenleft}V{\isacharunderscore}i\ i\ M{\isacharparenright}{\isachardoublequoteclose}\ {\isacharparenleft}\isakeyword{is}\ {\isachardoublequoteopen}{\isadigit{2}}\ {\isacharasterisk}\ card\ {\isacharquery}C\ {\isacharequal}\ card\ {\isacharquery}Vi{\isachardoublequoteclose}{\isacharparenright}\isanewline
+%
+\isadelimproof
+%
+\endisadelimproof
+%
+\isatagproof
+\isacommand{proof}\isamarkupfalse%
+\ {\isacharminus}\isanewline
+\ \ \isacommand{from}\isamarkupfalse%
+\ assms\ \isacommand{have}\isamarkupfalse%
+\ {\isadigit{1}}{\isacharcolon}\ {\isachardoublequoteopen}finite\ {\isacharparenleft}{\isasymUnion}\ {\isacharquery}C{\isacharparenright}{\isachardoublequoteclose}\ \isanewline
+\ \ \ \ \isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}auto\ simp\ add{\isacharcolon}\ matching{\isacharunderscore}def\isanewline
+\ \ \ \ \ \ matching{\isacharunderscore}i{\isacharunderscore}def\ edge{\isacharunderscore}as{\isacharunderscore}set{\isacharunderscore}def\ finite{\isacharunderscore}subset{\isacharparenright}\isanewline
+\ \ \isacommand{show}\isamarkupfalse%
+\ {\isacharquery}thesis\ \isacommand{unfolding}\isamarkupfalse%
+\ V{\isacharunderscore}i{\isacharunderscore}def\isanewline
+\ \ \isacommand{proof}\isamarkupfalse%
+\ {\isacharparenleft}rule\ card{\isacharunderscore}partition{\isacharparenright}\isanewline
+\ \ \ \ \isacommand{show}\isamarkupfalse%
+\ {\isachardoublequoteopen}finite\ {\isacharquery}C{\isachardoublequoteclose}\ \isacommand{using}\isamarkupfalse%
+\ {\isadigit{1}}\ \isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}rule\ finite{\isacharunderscore}UnionD{\isacharparenright}\isanewline
+\ \ \isacommand{next}\isamarkupfalse%
+\isanewline
+\ \ \ \ \isacommand{show}\isamarkupfalse%
+\ {\isachardoublequoteopen}finite\ {\isacharparenleft}{\isasymUnion}\ {\isacharquery}C{\isacharparenright}{\isachardoublequoteclose}\ \isacommand{using}\isamarkupfalse%
+\ {\isadigit{1}}\ \isacommand{{\isachardot}}\isamarkupfalse%
+\isanewline
+\ \ \isacommand{next}\isamarkupfalse%
+\isanewline
+\ \ \ \ \isacommand{fix}\isamarkupfalse%
+\ c\ \isacommand{assume}\isamarkupfalse%
+\ {\isachardoublequoteopen}c\ {\isasymin}\ {\isacharquery}C{\isachardoublequoteclose}\ \isacommand{then}\isamarkupfalse%
+\ \isacommand{show}\isamarkupfalse%
+\ {\isachardoublequoteopen}card\ c\ {\isacharequal}\ {\isadigit{2}}{\isachardoublequoteclose}\isanewline
+\ \ \ \ \isacommand{proof}\isamarkupfalse%
+\ {\isacharparenleft}rule\ imageE{\isacharparenright}\isanewline
+\ \ \ \ \ \ \isacommand{fix}\isamarkupfalse%
+\ x\ \isanewline
+\ \ \ \ \ \ \isacommand{assume}\isamarkupfalse%
+\ {\isadigit{2}}{\isacharcolon}\ {\isachardoublequoteopen}c\ {\isacharequal}\ edge{\isacharunderscore}as{\isacharunderscore}set\ x{\isachardoublequoteclose}\ \isakeyword{and}\ {\isadigit{3}}{\isacharcolon}\ {\isachardoublequoteopen}x\ {\isasymin}\ matching{\isacharunderscore}i\ i\ M{\isachardoublequoteclose}\isanewline
+\ \ \ \ \ \ \isacommand{with}\isamarkupfalse%
+\ assms\ \isacommand{have}\isamarkupfalse%
+\ {\isachardoublequoteopen}x\ {\isasymin}\ arcs\ G{\isachardoublequoteclose}\ \isanewline
+\ \ \ \ \ \ \ \ \isacommand{unfolding}\isamarkupfalse%
+\ matching{\isacharunderscore}i{\isacharunderscore}def\ matching{\isacharunderscore}def\ \isacommand{by}\isamarkupfalse%
+\ blast\isanewline
+\ \ \ \ \ \ \isacommand{then}\isamarkupfalse%
+\ \isacommand{have}\isamarkupfalse%
+\ {\isachardoublequoteopen}tail\ G\ x\ {\isasymnoteq}\ head\ G\ x{\isachardoublequoteclose}\ \isacommand{using}\isamarkupfalse%
+\ assms\ {\isadigit{3}}\ \isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}metis\ no{\isacharunderscore}loops{\isacharparenright}\isanewline
+\ \ \ \ \ \ \isacommand{with}\isamarkupfalse%
+\ {\isadigit{2}}\ \isacommand{show}\isamarkupfalse%
+\ {\isacharquery}thesis\ \isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}auto\ simp\ add{\isacharcolon}\ edge{\isacharunderscore}as{\isacharunderscore}set{\isacharunderscore}def{\isacharparenright}\isanewline
+\ \ \ \ \isacommand{qed}\isamarkupfalse%
+\isanewline
+\ \ \isacommand{next}\isamarkupfalse%
+\isanewline
+\ \ \ \ \isacommand{fix}\isamarkupfalse%
+\ x{\isadigit{1}}\ x{\isadigit{2}}\isanewline
+\ \ \ \ \isacommand{assume}\isamarkupfalse%
+\ {\isadigit{4}}{\isacharcolon}\ {\isachardoublequoteopen}x{\isadigit{1}}\ {\isasymin}\ {\isacharquery}C{\isachardoublequoteclose}\ \isakeyword{and}\ {\isadigit{5}}{\isacharcolon}\ {\isachardoublequoteopen}x{\isadigit{2}}\ {\isasymin}\ {\isacharquery}C{\isachardoublequoteclose}\ \isakeyword{and}\ {\isadigit{6}}{\isacharcolon}\ {\isachardoublequoteopen}x{\isadigit{1}}\ {\isasymnoteq}\ x{\isadigit{2}}{\isachardoublequoteclose}\isanewline
+\ \ \ \ \isacommand{{\isacharbraceleft}}\isamarkupfalse%
+\isanewline
+\ \ \ \ \ \ \isacommand{fix}\isamarkupfalse%
+\ e{\isadigit{1}}\ e{\isadigit{2}}\isanewline
+\ \ \ \ \ \ \isacommand{assume}\isamarkupfalse%
+\ {\isadigit{7}}{\isacharcolon}\ {\isachardoublequoteopen}x{\isadigit{1}}\ {\isacharequal}\ edge{\isacharunderscore}as{\isacharunderscore}set\ e{\isadigit{1}}{\isachardoublequoteclose}\ {\isachardoublequoteopen}e{\isadigit{1}}\ {\isasymin}\ matching{\isacharunderscore}i\ i\ M{\isachardoublequoteclose}\isanewline
+\ \ \ \ \ \ \ \ {\isachardoublequoteopen}x{\isadigit{2}}\ {\isacharequal}\ edge{\isacharunderscore}as{\isacharunderscore}set\ e{\isadigit{2}}{\isachardoublequoteclose}\ {\isachardoublequoteopen}e{\isadigit{2}}\ {\isasymin}\ matching{\isacharunderscore}i\ i\ M{\isachardoublequoteclose}\isanewline
+\ \ \ \ \ \ \isacommand{from}\isamarkupfalse%
+\ assms\ \isacommand{have}\isamarkupfalse%
+\ {\isachardoublequoteopen}matching\ G\ M{\isachardoublequoteclose}\ \isacommand{by}\isamarkupfalse%
+\ simp\isanewline
+\ \ \ \ \ \ \isacommand{moreover}\isamarkupfalse%
+\isanewline
+\ \ \ \ \ \ \isacommand{from}\isamarkupfalse%
+\ {\isadigit{7}}\ assms\ \isacommand{have}\isamarkupfalse%
+\ {\isachardoublequoteopen}e{\isadigit{1}}\ {\isasymin}\ M{\isachardoublequoteclose}\ \isakeyword{and}\ {\isachardoublequoteopen}e{\isadigit{2}}\ {\isasymin}\ M{\isachardoublequoteclose}\isanewline
+\ \ \ \ \ \ \ \ \isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}simp{\isacharunderscore}all\ add{\isacharcolon}\ matching{\isacharunderscore}i{\isacharunderscore}def{\isacharparenright}\isanewline
+\ \ \ \ \ \ \isacommand{moreover}\isamarkupfalse%
+\ \isacommand{from}\isamarkupfalse%
+\ {\isadigit{6}}\ {\isadigit{7}}\ \isacommand{have}\isamarkupfalse%
+\ {\isachardoublequoteopen}e{\isadigit{1}}\ {\isasymnoteq}\ e{\isadigit{2}}{\isachardoublequoteclose}\ \isacommand{by}\isamarkupfalse%
+\ blast\isanewline
+\ \ \ \ \ \ \isacommand{ultimately}\isamarkupfalse%
+\ \isacommand{have}\isamarkupfalse%
+\ {\isachardoublequoteopen}x{\isadigit{1}}\ {\isasyminter}\ x{\isadigit{2}}\ {\isacharequal}\ {\isacharbraceleft}{\isacharbraceright}{\isachardoublequoteclose}\ \isacommand{unfolding}\isamarkupfalse%
+\ {\isadigit{7}}\ \isanewline
+\ \ \ \ \ \ \ \ \isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}rule\ matching{\isacharunderscore}disjointness{\isacharparenright}\isanewline
+\ \ \ \ \isacommand{{\isacharbraceright}}\isamarkupfalse%
+\isanewline
+\ \ \ \ \isacommand{with}\isamarkupfalse%
+\ {\isadigit{4}}\ {\isadigit{5}}\ \isacommand{show}\isamarkupfalse%
+\ {\isachardoublequoteopen}x{\isadigit{1}}\ {\isasyminter}\ x{\isadigit{2}}\ {\isacharequal}\ {\isacharbraceleft}{\isacharbraceright}{\isachardoublequoteclose}\ \isacommand{by}\isamarkupfalse%
+\ clarsimp\isanewline
+\ \ \isacommand{qed}\isamarkupfalse%
+\isanewline
+\isacommand{qed}\isamarkupfalse%
+%
+\endisatagproof
+{\isafoldproof}%
+%
+\isadelimproof
+\isanewline
+%
+\endisadelimproof
+\isanewline
+\isacommand{lemma}\isamarkupfalse%
+\ card{\isacharunderscore}Mi{\isacharunderscore}twice{\isacharunderscore}card{\isacharunderscore}Vi{\isacharcolon}\isanewline
+\ \ \isakeyword{assumes}\ {\isachardoublequoteopen}matching\ G\ M\ {\isasymand}\ i\ {\isachargreater}\ {\isadigit{1}}{\isachardoublequoteclose}\isanewline
+\ \ \isakeyword{shows}\ {\isachardoublequoteopen}{\isadigit{2}}\ {\isacharasterisk}\ card\ {\isacharparenleft}matching{\isacharunderscore}i\ i\ M{\isacharparenright}\ {\isacharequal}\ card\ {\isacharparenleft}V{\isacharunderscore}i\ i\ M{\isacharparenright}{\isachardoublequoteclose}\isanewline
+%
+\isadelimproof
+%
+\endisadelimproof
+%
+\isatagproof
+\isacommand{proof}\isamarkupfalse%
+\ {\isacharminus}\isanewline
+\ \ \isacommand{show}\isamarkupfalse%
+\ {\isacharquery}thesis\ \ \isanewline
+\ \ \ \ \isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}metis\ assms\ card{\isacharunderscore}edge{\isacharunderscore}as{\isacharunderscore}set{\isacharunderscore}Mi{\isacharunderscore}twice{\isacharunderscore}card{\isacharunderscore}partitions\isanewline
+\ \ \ \ \ \ edge{\isacharunderscore}as{\isacharunderscore}set{\isacharunderscore}inj{\isacharunderscore}on{\isacharunderscore}Mi\ card{\isacharunderscore}image{\isacharparenright}\isanewline
+\isacommand{qed}\isamarkupfalse%
+%
+\endisatagproof
+{\isafoldproof}%
+%
+\isadelimproof
+\isanewline
+%
+\endisadelimproof
+\isanewline
+\isacommand{lemma}\isamarkupfalse%
+\ card{\isacharunderscore}Mi{\isacharunderscore}le{\isacharunderscore}floor{\isacharunderscore}div{\isacharunderscore}{\isadigit{2}}{\isacharunderscore}Vi{\isacharcolon}\isanewline
+\ \ \isakeyword{assumes}\ {\isachardoublequoteopen}matching\ G\ M\ {\isasymand}\ i\ {\isachargreater}\ {\isadigit{1}}{\isachardoublequoteclose}\isanewline
+\ \ \isakeyword{shows}\ {\isachardoublequoteopen}card\ {\isacharparenleft}matching{\isacharunderscore}i\ i\ M{\isacharparenright}\ {\isasymle}\ {\isacharparenleft}card\ {\isacharparenleft}V{\isacharunderscore}i\ i\ M{\isacharparenright}{\isacharparenright}\ div\ {\isadigit{2}}{\isachardoublequoteclose}\isanewline
+%
+\isadelimproof
+\ \ %
+\endisadelimproof
+%
+\isatagproof
+\isacommand{using}\isamarkupfalse%
+\ card{\isacharunderscore}Mi{\isacharunderscore}twice{\isacharunderscore}card{\isacharunderscore}Vi{\isacharbrackleft}OF\ assms{\isacharbrackright}\isanewline
+\ \ \isacommand{by}\isamarkupfalse%
+\ arith%
+\endisatagproof
+{\isafoldproof}%
+%
+\isadelimproof
+\isanewline
+%
+\endisadelimproof
+\isanewline
+\isacommand{lemma}\isamarkupfalse%
+\ card{\isacharunderscore}Vi{\isacharunderscore}le{\isacharunderscore}NVLi{\isacharcolon}\isanewline
+\ \ \isakeyword{assumes}\ {\isachardoublequoteopen}i{\isachargreater}{\isadigit{1}}\ {\isasymand}\ matching\ G\ M{\isachardoublequoteclose}\isanewline
+\ \ \isakeyword{shows}\ {\isachardoublequoteopen}card\ {\isacharparenleft}V{\isacharunderscore}i\ i\ M{\isacharparenright}\ {\isasymle}\ N\ {\isacharparenleft}verts\ G{\isacharparenright}\ L\ i{\isachardoublequoteclose}\isanewline
+%
+\isadelimproof
+\ \ %
+\endisadelimproof
+%
+\isatagproof
+\isacommand{unfolding}\isamarkupfalse%
+\ N{\isacharunderscore}def\isanewline
+\isacommand{proof}\isamarkupfalse%
+\ {\isacharparenleft}rule\ card{\isacharunderscore}mono{\isacharparenright}\isanewline
+\ \ \isacommand{show}\isamarkupfalse%
+\ {\isachardoublequoteopen}finite\ {\isacharbraceleft}v\ {\isasymin}\ verts\ G{\isachardot}\ L\ v\ {\isacharequal}\ i{\isacharbraceright}{\isachardoublequoteclose}\ \isacommand{using}\isamarkupfalse%
+\ assms\ \isanewline
+\ \ \ \ \isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}simp\ add{\isacharcolon}\ matching{\isacharunderscore}def{\isacharparenright}\isanewline
+\isacommand{next}\isamarkupfalse%
+\isanewline
+\ \ \isacommand{let}\isamarkupfalse%
+\ {\isacharquery}A\ {\isacharequal}\ {\isachardoublequoteopen}edge{\isacharunderscore}as{\isacharunderscore}set\ {\isacharbackquote}\ matching{\isacharunderscore}i\ i\ M{\isachardoublequoteclose}\isanewline
+\ \ \isacommand{let}\isamarkupfalse%
+\ {\isacharquery}C\ {\isacharequal}\ {\isachardoublequoteopen}{\isacharbraceleft}v\ {\isasymin}\ verts\ G{\isachardot}\ L\ v\ {\isacharequal}\ i{\isacharbraceright}{\isachardoublequoteclose}\ \isanewline
+\ \ \isacommand{show}\isamarkupfalse%
+\ {\isachardoublequoteopen}V{\isacharunderscore}i\ i\ M\ {\isasymsubseteq}\ {\isacharquery}C{\isachardoublequoteclose}\ \isacommand{using}\isamarkupfalse%
+\ assms\ \isacommand{unfolding}\isamarkupfalse%
+\ V{\isacharunderscore}i{\isacharunderscore}def\isanewline
+\ \ \isacommand{proof}\isamarkupfalse%
+\ {\isacharparenleft}intro\ Union{\isacharunderscore}least{\isacharparenright}\isanewline
+\ \ \ \ \isacommand{fix}\isamarkupfalse%
+\ X\ \isacommand{assume}\isamarkupfalse%
+\ {\isachardoublequoteopen}X\ {\isasymin}\ {\isacharquery}A{\isachardoublequoteclose}\isanewline
+\ \ \ \ \isacommand{with}\isamarkupfalse%
+\ assms\ \isacommand{have}\isamarkupfalse%
+\ {\isachardoublequoteopen}{\isasymexists}x\ {\isasymin}\ matching{\isacharunderscore}i\ i\ M{\isachardot}\ edge{\isacharunderscore}as{\isacharunderscore}set\ x\ {\isacharequal}\ X{\isachardoublequoteclose}\isanewline
+\ \ \ \ \ \ \isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}simp\ add{\isacharcolon}\ matching{\isacharunderscore}i{\isacharunderscore}arcs{\isacharunderscore}as{\isacharunderscore}sets{\isacharparenright}\isanewline
+\ \ \ \ \isacommand{with}\isamarkupfalse%
+\ assms\ \isacommand{show}\isamarkupfalse%
+\ {\isachardoublequoteopen}X\ {\isasymsubseteq}\ {\isacharquery}C{\isachardoublequoteclose}\ \isanewline
+\ \ \ \ \ \ \isacommand{unfolding}\isamarkupfalse%
+\ matching{\isacharunderscore}def\isanewline
+\ \ \ \ \ \ \ \ matching{\isacharunderscore}i{\isacharunderscore}def\ edge{\isacharunderscore}as{\isacharunderscore}set{\isacharunderscore}def\ \isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}blast\ intro{\isacharcolon}\ tail{\isacharunderscore}in{\isacharunderscore}verts\ head{\isacharunderscore}in{\isacharunderscore}verts{\isacharparenright}\isanewline
+\ \ \isacommand{qed}\isamarkupfalse%
+\isanewline
+\isacommand{qed}\isamarkupfalse%
+%
+\endisatagproof
+{\isafoldproof}%
+%
+\isadelimproof
+\isanewline
+%
+\endisadelimproof
+\isanewline
+\isacommand{lemma}\isamarkupfalse%
+\ card{\isacharunderscore}Mi{\isacharunderscore}le{\isacharunderscore}floor{\isacharunderscore}div{\isacharunderscore}{\isadigit{2}}{\isacharunderscore}NVLi{\isacharcolon}\isanewline
+\ \ \isakeyword{assumes}\ {\isachardoublequoteopen}matching\ G\ M\ {\isasymand}\ i\ {\isachargreater}\ {\isadigit{1}}{\isachardoublequoteclose}\isanewline
+\ \ \isakeyword{shows}\ {\isachardoublequoteopen}card\ {\isacharparenleft}matching{\isacharunderscore}i\ i\ M{\isacharparenright}\ {\isasymle}\ {\isacharparenleft}N\ {\isacharparenleft}verts\ G{\isacharparenright}\ L\ i{\isacharparenright}\ div\ {\isadigit{2}}{\isachardoublequoteclose}\isanewline
+%
+\isadelimproof
+%
+\endisadelimproof
+%
+\isatagproof
+\isacommand{proof}\isamarkupfalse%
+\ {\isacharminus}\ \ \isanewline
+\ \ \isacommand{from}\isamarkupfalse%
+\ assms\ \isacommand{have}\isamarkupfalse%
+\ {\isachardoublequoteopen}card\ {\isacharparenleft}V{\isacharunderscore}i\ i\ M{\isacharparenright}\ {\isasymle}\ {\isacharparenleft}N\ {\isacharparenleft}verts\ G{\isacharparenright}\ L\ i{\isacharparenright}{\isachardoublequoteclose}\isanewline
+\ \ \ \ \isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}simp\ add{\isacharcolon}\ card{\isacharunderscore}Vi{\isacharunderscore}le{\isacharunderscore}NVLi{\isacharparenright}\ \isanewline
+\ \ \isacommand{then}\isamarkupfalse%
+\ \isacommand{have}\isamarkupfalse%
+\ {\isachardoublequoteopen}card\ {\isacharparenleft}V{\isacharunderscore}i\ i\ M{\isacharparenright}\ div\ {\isadigit{2}}\ {\isasymle}\ {\isacharparenleft}N\ {\isacharparenleft}verts\ G{\isacharparenright}\ L\ i{\isacharparenright}\ div\ {\isadigit{2}}{\isachardoublequoteclose}\isanewline
+\ \ \ \ \isacommand{by}\isamarkupfalse%
+\ simp\isanewline
+\ \ \isacommand{moreover}\isamarkupfalse%
+\ \isacommand{from}\isamarkupfalse%
+\ assms\ \isacommand{have}\isamarkupfalse%
+\ \isanewline
+\ \ \ \ {\isachardoublequoteopen}card\ {\isacharparenleft}matching{\isacharunderscore}i\ i\ M{\isacharparenright}\ {\isasymle}\ card\ {\isacharparenleft}V{\isacharunderscore}i\ i\ M{\isacharparenright}\ div\ {\isadigit{2}}{\isachardoublequoteclose}\isanewline
+\ \ \ \ \isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}intro\ card{\isacharunderscore}Mi{\isacharunderscore}le{\isacharunderscore}floor{\isacharunderscore}div{\isacharunderscore}{\isadigit{2}}{\isacharunderscore}Vi{\isacharparenright}\isanewline
+\ \ \isacommand{ultimately}\isamarkupfalse%
+\ \isacommand{show}\isamarkupfalse%
+\ {\isacharquery}thesis\ \isacommand{by}\isamarkupfalse%
+\ auto\isanewline
+\isacommand{qed}\isamarkupfalse%
+%
+\endisatagproof
+{\isafoldproof}%
+%
+\isadelimproof
+\isanewline
+%
+\endisadelimproof
+\isanewline
+\isacommand{lemma}\isamarkupfalse%
+\ card{\isacharunderscore}M{\isacharunderscore}le{\isacharunderscore}sum{\isacharunderscore}card{\isacharunderscore}Mi{\isacharcolon}\ \isanewline
+\isakeyword{assumes}\ {\isachardoublequoteopen}matching\ G\ M{\isachardoublequoteclose}\ \isakeyword{and}\ {\isachardoublequoteopen}OSC\ G\ L{\isachardoublequoteclose}\isanewline
+\isakeyword{shows}\ {\isachardoublequoteopen}card\ M\ {\isasymle}\ {\isacharparenleft}{\isasymSum}\ i\ {\isasymin}\ L{\isacharbackquote}verts\ G{\isachardot}\ card\ {\isacharparenleft}matching{\isacharunderscore}i\ i\ M{\isacharparenright}{\isacharparenright}{\isachardoublequoteclose}\isanewline
+\ \ {\isacharparenleft}\isakeyword{is}\ {\isachardoublequoteopen}card\ {\isacharunderscore}\ {\isasymle}\ {\isacharquery}CardMi{\isachardoublequoteclose}{\isacharparenright}\isanewline
+%
+\isadelimproof
+%
+\endisadelimproof
+%
+\isatagproof
+\isacommand{proof}\isamarkupfalse%
+\ {\isacharminus}\isanewline
+\ \ \isacommand{let}\isamarkupfalse%
+\ {\isacharquery}UnMi\ {\isacharequal}\ {\isachardoublequoteopen}{\isasymUnion}x\ {\isasymin}\ L{\isacharbackquote}verts\ G{\isachardot}\ matching{\isacharunderscore}i\ x\ M{\isachardoublequoteclose}\isanewline
+\ \ \isacommand{from}\isamarkupfalse%
+\ assms\ \isacommand{have}\isamarkupfalse%
+\ {\isadigit{1}}{\isacharcolon}\ {\isachardoublequoteopen}finite\ {\isacharquery}UnMi{\isachardoublequoteclose}\isanewline
+\ \ \ \ \isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}auto\ simp\ add{\isacharcolon}\ matching{\isacharunderscore}def\ matching{\isacharunderscore}i{\isacharunderscore}def\ finite{\isacharunderscore}subset{\isacharparenright}\isanewline
+\ \ \isacommand{{\isacharbraceleft}}\isamarkupfalse%
+\isanewline
+\ \ \ \ \isacommand{fix}\isamarkupfalse%
+\ e\ \isacommand{assume}\isamarkupfalse%
+\ e{\isacharunderscore}inM{\isacharcolon}\ {\isachardoublequoteopen}e\ {\isasymin}\ M{\isachardoublequoteclose}\isanewline
+\ \ \ \ \isacommand{let}\isamarkupfalse%
+\ {\isacharquery}v\ {\isacharequal}\ {\isachardoublequoteopen}relevant{\isacharunderscore}endpoint\ e{\isachardoublequoteclose}\isanewline
+\ \ \ \ \isacommand{have}\isamarkupfalse%
+\ {\isadigit{1}}{\isacharcolon}\ {\isachardoublequoteopen}e\ {\isasymin}\ matching{\isacharunderscore}i\ {\isacharparenleft}L\ {\isacharquery}v{\isacharparenright}\ M{\isachardoublequoteclose}\ \isacommand{using}\isamarkupfalse%
+\ assms\ e{\isacharunderscore}inM\isanewline
+\ \ \ \ \ \ \isacommand{proof}\isamarkupfalse%
+\ cases\isanewline
+\ \ \ \ \ \ \ \ \isacommand{assume}\isamarkupfalse%
+\ {\isachardoublequoteopen}L\ {\isacharparenleft}tail\ G\ e{\isacharparenright}\ {\isacharequal}\ {\isadigit{1}}{\isachardoublequoteclose}\isanewline
+\ \ \ \ \ \ \ \ \isacommand{thus}\isamarkupfalse%
+\ {\isacharquery}thesis\ \isacommand{using}\isamarkupfalse%
+\ assms\ e{\isacharunderscore}inM\ \isanewline
+\ \ \ \ \ \ \ \ \ \ \isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}simp\ add{\isacharcolon}\ relevant{\isacharunderscore}endpoint{\isacharunderscore}def\ matching{\isacharunderscore}i{\isacharunderscore}def{\isacharparenright}\isanewline
+\ \ \ \ \ \ \isacommand{next}\isamarkupfalse%
+\isanewline
+\ \ \ \ \ \ \ \ \isacommand{assume}\isamarkupfalse%
+\ a{\isacharcolon}\ {\isachardoublequoteopen}L\ {\isacharparenleft}tail\ G\ e{\isacharparenright}\ {\isasymnoteq}\ {\isadigit{1}}{\isachardoublequoteclose}\ \isanewline
+\ \ \ \ \ \ \ \ \isacommand{have}\isamarkupfalse%
+\ {\isachardoublequoteopen}L\ {\isacharparenleft}tail\ G\ e{\isacharparenright}\ {\isacharequal}\ {\isadigit{1}}\ {\isasymor}\ L\ {\isacharparenleft}head\ G\ e{\isacharparenright}\ {\isacharequal}\ {\isadigit{1}}\ \isanewline
+\ \ \ \ \ \ \ \ \ \ {\isasymor}\ \ {\isacharparenleft}L\ {\isacharparenleft}tail\ G\ e{\isacharparenright}\ {\isacharequal}\ L\ {\isacharparenleft}head\ G\ e{\isacharparenright}\ {\isasymand}\ L\ {\isacharparenleft}tail\ G\ e{\isacharparenright}\ {\isachargreater}{\isadigit{1}}{\isacharparenright}{\isachardoublequoteclose}\isanewline
+\ \ \ \ \ \ \ \ \ \ \isacommand{using}\isamarkupfalse%
+\ assms\ e{\isacharunderscore}inM\ \isacommand{unfolding}\isamarkupfalse%
+\ OSC{\isacharunderscore}def\ \isanewline
+\ \ \ \ \ \ \ \ \ \ \isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}auto\ intro{\isacharcolon}\ expand{\isacharunderscore}set{\isacharunderscore}containment{\isacharparenright}\isanewline
+\ \ \ \ \ \ \ \ \isacommand{thus}\isamarkupfalse%
+\ {\isacharquery}thesis\ \isacommand{using}\isamarkupfalse%
+\ assms\ e{\isacharunderscore}inM\ a\ \isanewline
+\ \ \ \ \ \ \ \ \ \ \isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}auto\ simp\ add{\isacharcolon}\ relevant{\isacharunderscore}endpoint{\isacharunderscore}def\ matching{\isacharunderscore}i{\isacharunderscore}def{\isacharparenright}\isanewline
+\ \ \ \ \ \ \isacommand{qed}\isamarkupfalse%
+\isanewline
+\ \ \ \ \ \ \isacommand{have}\isamarkupfalse%
+\ {\isadigit{2}}{\isacharcolon}\ {\isachardoublequoteopen}{\isacharquery}v\ {\isasymin}\ verts\ G{\isachardoublequoteclose}\ \isacommand{using}\isamarkupfalse%
+\ assms\ e{\isacharunderscore}inM\ \isanewline
+\ \ \ \ \ \ \ \ \isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}auto\ simp\ add{\isacharcolon}\ matching{\isacharunderscore}def\ relevant{\isacharunderscore}endpoint{\isacharunderscore}def\ intro{\isacharcolon}\ tail{\isacharunderscore}in{\isacharunderscore}verts\ head{\isacharunderscore}in{\isacharunderscore}verts{\isacharparenright}\isanewline
+\ \ \ \ \ \ \isacommand{then}\isamarkupfalse%
+\ \isacommand{have}\isamarkupfalse%
+\ {\isachardoublequoteopen}{\isasymexists}\ v\ {\isasymin}\ verts\ G{\isachardot}\ e\ {\isasymin}\ matching{\isacharunderscore}i\ {\isacharparenleft}L\ v{\isacharparenright}\ M{\isachardoublequoteclose}\ \isacommand{using}\isamarkupfalse%
+\ assms\ {\isadigit{1}}\ {\isadigit{2}}\isanewline
+\ \ \ \ \ \ \ \ \isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}intro\ bexI{\isacharparenright}\ \isanewline
+\ \ \ \ \isacommand{{\isacharbraceright}}\isamarkupfalse%
+\isanewline
+\ \ \ \ \isacommand{with}\isamarkupfalse%
+\ assms\ \isacommand{have}\isamarkupfalse%
+\ {\isachardoublequoteopen}M\ {\isasymsubseteq}\ {\isacharquery}UnMi{\isachardoublequoteclose}\ \isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}auto{\isacharparenright}\isanewline
+\ \ \ \ \isacommand{with}\isamarkupfalse%
+\ assms\ \isakeyword{and}\ {\isadigit{1}}\ \isacommand{have}\isamarkupfalse%
+\ {\isachardoublequoteopen}card\ M\ {\isasymle}\ card\ {\isacharquery}UnMi{\isachardoublequoteclose}\ \isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}intro\ card{\isacharunderscore}mono{\isacharparenright}\isanewline
+\ \ \ \ \isacommand{moreover}\isamarkupfalse%
+\ \isacommand{from}\isamarkupfalse%
+\ assms\ \isacommand{have}\isamarkupfalse%
+\ {\isachardoublequoteopen}card\ {\isacharquery}UnMi\ {\isacharequal}\ {\isacharquery}CardMi{\isachardoublequoteclose}\isanewline
+\ \ \ \ \isacommand{proof}\isamarkupfalse%
+\ {\isacharparenleft}intro\ card{\isacharunderscore}UN{\isacharunderscore}disjoint{\isacharparenright}\ \isanewline
+\ \ \ \ \ \ \isacommand{show}\isamarkupfalse%
+\ {\isachardoublequoteopen}finite\ {\isacharparenleft}L{\isacharbackquote}verts\ G{\isacharparenright}{\isachardoublequoteclose}\ \isacommand{by}\isamarkupfalse%
+\ simp\isanewline
+\ \ \ \ \isacommand{next}\isamarkupfalse%
+\ \isanewline
+\ \ \ \ \ \ \isacommand{show}\isamarkupfalse%
+\ {\isachardoublequoteopen}{\isasymforall}i{\isasymin}L{\isacharbackquote}verts\ G{\isachardot}\ finite\ {\isacharparenleft}matching{\isacharunderscore}i\ i\ M{\isacharparenright}{\isachardoublequoteclose}\ \isacommand{using}\isamarkupfalse%
+\ assms\isanewline
+\ \ \ \ \ \ \ \ \isacommand{using}\isamarkupfalse%
+\ finite{\isacharunderscore}arcs\isanewline
+\ \ \ \ \ \ \ \ \isacommand{unfolding}\isamarkupfalse%
+\ matching{\isacharunderscore}def\ matching{\isacharunderscore}i{\isacharunderscore}def\isanewline
+\ \ \ \ \ \ \ \ \isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}blast\ intro{\isacharcolon}\ finite{\isacharunderscore}subset\ finite{\isacharunderscore}arcs{\isacharparenright}\isanewline
+\ \ \ \ \isacommand{next}\isamarkupfalse%
+\ \isanewline
+\ \ \ \ \ \ \isacommand{show}\isamarkupfalse%
+\ {\isachardoublequoteopen}{\isasymforall}i\ {\isasymin}\ L{\isacharbackquote}verts\ G{\isachardot}\ {\isasymforall}j\ {\isasymin}\ L{\isacharbackquote}verts\ G{\isachardot}\ i\ {\isasymnoteq}\ j\ {\isasymlongrightarrow}\ \isanewline
+\ \ \ \ \ \ \ \ matching{\isacharunderscore}i\ i\ M\ {\isasyminter}\ matching{\isacharunderscore}i\ j\ M\ {\isacharequal}\ {\isacharbraceleft}{\isacharbraceright}{\isachardoublequoteclose}\ \isacommand{using}\isamarkupfalse%
+\ assms\isanewline
+\ \ \ \ \ \ \ \ \isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}auto\ simp\ add{\isacharcolon}\ matching{\isacharunderscore}i{\isacharunderscore}def{\isacharparenright}\isanewline
+\ \ \ \ \isacommand{qed}\isamarkupfalse%
+\isanewline
+\ \ \isacommand{ultimately}\isamarkupfalse%
+\ \isacommand{show}\isamarkupfalse%
+\ {\isacharquery}thesis\ \isacommand{by}\isamarkupfalse%
+\ simp\isanewline
+\isacommand{qed}\isamarkupfalse%
+%
+\endisatagproof
+{\isafoldproof}%
+%
+\isadelimproof
+\isanewline
+%
+\endisadelimproof
+\isanewline
+\isacommand{theorem}\isamarkupfalse%
+\ card{\isacharunderscore}M{\isacharunderscore}le{\isacharunderscore}weight{\isacharunderscore}NVLi{\isacharcolon}\isanewline
+\ \ \isakeyword{assumes}\ {\isachardoublequoteopen}matching\ G\ M{\isachardoublequoteclose}\ \isakeyword{and}\ {\isachardoublequoteopen}OSC\ G\ L{\isachardoublequoteclose}\isanewline
+\ \ \isakeyword{shows}\ {\isachardoublequoteopen}card\ M\ {\isasymle}\ weight\ {\isacharbraceleft}i\ {\isasymin}\ L\ {\isacharbackquote}\ verts\ G{\isachardot}\ i\ {\isachargreater}\ {\isadigit{1}}{\isacharbraceright}\ {\isacharparenleft}N\ {\isacharparenleft}verts\ G{\isacharparenright}\ L{\isacharparenright}{\isachardoublequoteclose}\ {\isacharparenleft}\isakeyword{is}\ {\isachardoublequoteopen}{\isacharunderscore}\ {\isasymle}\ {\isacharquery}W{\isachardoublequoteclose}{\isacharparenright}\isanewline
+%
+\isadelimproof
+%
+\endisadelimproof
+%
+\isatagproof
+\isacommand{proof}\isamarkupfalse%
+\ {\isacharminus}\isanewline
+\ \ \isacommand{let}\isamarkupfalse%
+\ {\isacharquery}M{\isadigit{0}}{\isadigit{1}}\ {\isacharequal}\ {\isachardoublequoteopen}{\isasymSum}i{\isacharbar}\ i\ {\isasymin}\ L\ {\isacharbackquote}\ verts\ G\ {\isasymand}\ {\isacharparenleft}i{\isacharequal}{\isadigit{1}}\ {\isasymor}\ i{\isacharequal}{\isadigit{0}}{\isacharparenright}{\isachardot}\ card\ {\isacharparenleft}matching{\isacharunderscore}i\ i\ M{\isacharparenright}{\isachardoublequoteclose}\isanewline
+\ \ \isacommand{let}\isamarkupfalse%
+\ {\isacharquery}Mgr{\isadigit{1}}\ {\isacharequal}\ {\isachardoublequoteopen}{\isasymSum}i{\isacharbar}\ i\ {\isasymin}\ L\ {\isacharbackquote}\ verts\ G\ {\isasymand}\ {\isadigit{1}}\ {\isacharless}\ i{\isachardot}\ card\ {\isacharparenleft}matching{\isacharunderscore}i\ i\ M{\isacharparenright}{\isachardoublequoteclose}\isanewline
+\ \ \isacommand{let}\isamarkupfalse%
+\ {\isacharquery}Mi\ {\isacharequal}\ {\isachardoublequoteopen}{\isasymSum}\ i{\isasymin}L\ {\isacharbackquote}\ verts\ G{\isachardot}\ card\ {\isacharparenleft}matching{\isacharunderscore}i\ i\ M{\isacharparenright}{\isachardoublequoteclose}\isanewline
+\ \ \isacommand{have}\isamarkupfalse%
+\ {\isachardoublequoteopen}card\ M\ {\isasymle}\ {\isacharquery}Mi{\isachardoublequoteclose}\ \isacommand{using}\isamarkupfalse%
+\ assms\ \isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}rule\ card{\isacharunderscore}M{\isacharunderscore}le{\isacharunderscore}sum{\isacharunderscore}card{\isacharunderscore}Mi{\isacharparenright}\ \isanewline
+\ \ \isacommand{moreover}\isamarkupfalse%
+\isanewline
+\ \ \isacommand{have}\isamarkupfalse%
+\ {\isachardoublequoteopen}{\isacharquery}Mi\ {\isasymle}\ {\isacharquery}W{\isachardoublequoteclose}\isanewline
+\ \ \isacommand{proof}\isamarkupfalse%
+\ {\isacharminus}\isanewline
+\ \ \ \ \isacommand{let}\isamarkupfalse%
+\ {\isacharquery}A\ {\isacharequal}\ {\isachardoublequoteopen}{\isacharbraceleft}i\ {\isasymin}\ L\ {\isacharbackquote}\ verts\ G{\isachardot}\ i\ {\isacharequal}\ {\isadigit{1}}\ {\isasymor}\ i\ {\isacharequal}\ {\isadigit{0}}{\isacharbraceright}{\isachardoublequoteclose}\isanewline
+\ \ \ \ \isacommand{let}\isamarkupfalse%
+\ {\isacharquery}B\ {\isacharequal}\ {\isachardoublequoteopen}{\isacharbraceleft}i\ {\isasymin}\ L\ {\isacharbackquote}\ verts\ G{\isachardot}\ {\isadigit{1}}\ {\isacharless}\ i{\isacharbraceright}{\isachardoublequoteclose}\isanewline
+\ \ \ \ \isacommand{let}\isamarkupfalse%
+\ {\isacharquery}g\ {\isacharequal}\ {\isachardoublequoteopen}{\isasymlambda}\ i{\isachardot}\ card\ {\isacharparenleft}matching{\isacharunderscore}i\ i\ M{\isacharparenright}{\isachardoublequoteclose}\isanewline
+\ \ \ \ \isacommand{let}\isamarkupfalse%
+\ {\isacharquery}set{\isadigit{0}}{\isadigit{1}}\ {\isacharequal}\ {\isachardoublequoteopen}{\isacharbraceleft}\ i{\isachardot}\ i\ {\isacharcolon}\ L\ {\isacharbackquote}\ verts\ G\ {\isacharampersand}\ {\isacharparenleft}i\ {\isacharequal}\ {\isadigit{1}}\ {\isacharbar}\ i\ {\isacharequal}\ {\isadigit{0}}{\isacharparenright}{\isacharbraceright}{\isachardoublequoteclose}\isanewline
+\ \ \ \ \isacommand{have}\isamarkupfalse%
+\ a{\isacharcolon}\ {\isachardoublequoteopen}L\ {\isacharbackquote}\ verts\ G\ {\isacharequal}\ {\isacharquery}A\ {\isasymunion}\ {\isacharquery}B{\isachardoublequoteclose}\ \isacommand{using}\isamarkupfalse%
+\ assms\ \isacommand{by}\isamarkupfalse%
+\ auto\isanewline
+\ \ \ \ \isacommand{have}\isamarkupfalse%
+\ b{\isacharcolon}\ {\isachardoublequoteopen}setsum\ {\isacharquery}g\ {\isacharparenleft}{\isacharquery}A\ {\isasymunion}\ {\isacharquery}B{\isacharparenright}\ {\isacharequal}\ setsum\ {\isacharquery}g\ {\isacharquery}A\ {\isacharplus}\ setsum\ {\isacharquery}g\ {\isacharquery}B{\isachardoublequoteclose}\isanewline
+\ \ \ \ \ \ \isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}auto\ intro{\isacharcolon}\ setsum{\isachardot}union{\isacharunderscore}disjoint{\isacharparenright}\isanewline
+\ \ \ \ \isacommand{have}\isamarkupfalse%
+\ {\isadigit{1}}{\isacharcolon}\ {\isachardoublequoteopen}{\isacharquery}Mi\ {\isacharequal}\ {\isacharquery}M{\isadigit{0}}{\isadigit{1}}{\isacharplus}\ {\isacharquery}Mgr{\isadigit{1}}{\isachardoublequoteclose}\ \isacommand{using}\isamarkupfalse%
+\ assms\ a\ b\ \isacommand{by}\isamarkupfalse%
+\ simp\isanewline
+\ \ \ \ \isacommand{moreover}\isamarkupfalse%
+\isanewline
+\ \ \ \ \isacommand{have}\isamarkupfalse%
+\ {\isadigit{0}}{\isacharcolon}\ {\isachardoublequoteopen}card\ {\isacharparenleft}matching{\isacharunderscore}i\ {\isadigit{0}}\ M{\isacharparenright}\ {\isacharequal}\ {\isadigit{0}}{\isachardoublequoteclose}\ \isacommand{using}\isamarkupfalse%
+\ assms\isanewline
+\ \ \ \ \ \ \isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}simp\ add{\isacharcolon}\ matching{\isacharunderscore}i{\isacharunderscore}def{\isacharparenright}\isanewline
+\ \ \ \ \ \ \isacommand{have}\isamarkupfalse%
+\ {\isadigit{2}}{\isacharcolon}\ {\isachardoublequoteopen}{\isacharquery}M{\isadigit{0}}{\isadigit{1}}\ {\isasymle}\ N\ {\isacharparenleft}verts\ G{\isacharparenright}\ L\ {\isadigit{1}}{\isachardoublequoteclose}\isanewline
+\ \ \ \ \ \ \isacommand{proof}\isamarkupfalse%
+\ cases\isanewline
+\ \ \ \ \ \ \ \ \isacommand{assume}\isamarkupfalse%
+\ a{\isacharcolon}\ {\isachardoublequoteopen}{\isadigit{1}}\ {\isasymin}\ L\ {\isacharbackquote}\ verts\ G{\isachardoublequoteclose}\isanewline
+\ \ \ \ \ \ \ \ \isacommand{have}\isamarkupfalse%
+\ {\isachardoublequoteopen}{\isacharquery}M{\isadigit{0}}{\isadigit{1}}\ {\isacharequal}\ card\ {\isacharparenleft}matching{\isacharunderscore}i\ {\isadigit{1}}\ M{\isacharparenright}{\isachardoublequoteclose}\ \isanewline
+\ \ \ \ \ \ \ \ \isacommand{proof}\isamarkupfalse%
+\ cases\isanewline
+\ \ \ \ \ \ \ \ \ \ \isacommand{assume}\isamarkupfalse%
+\ b{\isacharcolon}\ {\isachardoublequoteopen}{\isadigit{0}}\ {\isasymin}\ L\ {\isacharbackquote}\ verts\ G{\isachardoublequoteclose}\isanewline
+\ \ \ \ \ \ \ \ \ \ \isacommand{with}\isamarkupfalse%
+\ a\ assms\ \isacommand{have}\isamarkupfalse%
+\ \ {\isachardoublequoteopen}{\isacharquery}set{\isadigit{0}}{\isadigit{1}}\ {\isacharequal}\ {\isacharbraceleft}{\isadigit{0}}{\isacharcomma}\ {\isadigit{1}}{\isacharbraceright}{\isachardoublequoteclose}\ \isacommand{by}\isamarkupfalse%
+\ blast\isanewline
+\ \ \ \ \ \ \ \ \ \ \isacommand{thus}\isamarkupfalse%
+\ {\isacharquery}thesis\ \isacommand{using}\isamarkupfalse%
+\ assms\ {\isadigit{0}}\ \isacommand{by}\isamarkupfalse%
+\ simp\isanewline
+\ \ \ \ \ \ \ \ \isacommand{next}\isamarkupfalse%
+\isanewline
+\ \ \ \ \ \ \ \ \ \ \isacommand{assume}\isamarkupfalse%
+\ b{\isacharcolon}\ {\isachardoublequoteopen}{\isadigit{0}}\ {\isasymnotin}\ L\ {\isacharbackquote}\ verts\ G{\isachardoublequoteclose}\isanewline
+\ \ \ \ \ \ \ \ \ \ \isacommand{with}\isamarkupfalse%
+\ a\ \isacommand{have}\isamarkupfalse%
+\ {\isachardoublequoteopen}{\isacharquery}set{\isadigit{0}}{\isadigit{1}}\ {\isacharequal}\ {\isacharbraceleft}{\isadigit{1}}{\isacharbraceright}{\isachardoublequoteclose}\ \isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}auto\ simp\ del{\isacharcolon}One{\isacharunderscore}nat{\isacharunderscore}def{\isacharparenright}\isanewline
+\ \ \ \ \ \ \ \ \ \ \isacommand{thus}\isamarkupfalse%
+\ {\isacharquery}thesis\ \isacommand{by}\isamarkupfalse%
+\ simp\isanewline
+\ \ \ \ \ \ \ \ \isacommand{qed}\isamarkupfalse%
+\isanewline
+\ \ \ \ \ \ \ \ \isacommand{thus}\isamarkupfalse%
+\ {\isacharquery}thesis\ \isacommand{using}\isamarkupfalse%
+\ assms\ a\ \isanewline
+\ \ \ \ \ \ \ \ \ \ \isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}simp\ del{\isacharcolon}\ One{\isacharunderscore}nat{\isacharunderscore}def{\isacharcomma}\ intro\ card{\isacharunderscore}M{\isadigit{1}}{\isacharunderscore}le{\isacharunderscore}NVL{\isadigit{1}}{\isacharparenright}\isanewline
+\ \ \ \ \ \ \isacommand{next}\isamarkupfalse%
+\isanewline
+\ \ \ \ \ \ \ \ \isacommand{assume}\isamarkupfalse%
+\ a{\isacharcolon}\ {\isachardoublequoteopen}{\isadigit{1}}\ {\isasymnotin}\ L\ {\isacharbackquote}\ verts\ G{\isachardoublequoteclose}\isanewline
+\ \ \ \ \ \ \ \ \isacommand{show}\isamarkupfalse%
+\ {\isacharquery}thesis\isanewline
+\ \ \ \ \ \ \ \ \isacommand{proof}\isamarkupfalse%
+\ cases\isanewline
+\ \ \ \ \ \ \ \ \ \ \isacommand{assume}\isamarkupfalse%
+\ b{\isacharcolon}\ {\isachardoublequoteopen}{\isadigit{0}}\ {\isasymin}\ L\ {\isacharbackquote}\ verts\ G{\isachardoublequoteclose}\isanewline
+\ \ \ \ \ \ \ \ \ \ \isacommand{with}\isamarkupfalse%
+\ a\ assms\ \isacommand{have}\isamarkupfalse%
+\ \ {\isachardoublequoteopen}{\isacharquery}set{\isadigit{0}}{\isadigit{1}}\ {\isacharequal}\ {\isacharbraceleft}{\isadigit{0}}{\isacharbraceright}{\isachardoublequoteclose}\ \isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}auto\ simp\ del{\isacharcolon}One{\isacharunderscore}nat{\isacharunderscore}def{\isacharparenright}\isanewline
+\ \ \ \ \ \ \ \ \ \ \isacommand{thus}\isamarkupfalse%
+\ {\isacharquery}thesis\ \isacommand{using}\isamarkupfalse%
+\ assms\ {\isadigit{0}}\ \isacommand{by}\isamarkupfalse%
+\ auto\isanewline
+\ \ \ \ \ \ \ \ \isacommand{next}\isamarkupfalse%
+\isanewline
+\ \ \ \ \ \ \ \ \ \ \isacommand{assume}\isamarkupfalse%
+\ b{\isacharcolon}\ {\isachardoublequoteopen}{\isadigit{0}}\ {\isasymnotin}\ L\ {\isacharbackquote}\ verts\ G{\isachardoublequoteclose}\isanewline
+\ \ \ \ \ \ \ \ \ \ \isacommand{with}\isamarkupfalse%
+\ a\ \isacommand{have}\isamarkupfalse%
+\ {\isachardoublequoteopen}{\isacharquery}set{\isadigit{0}}{\isadigit{1}}\ {\isacharequal}\ {\isacharbraceleft}{\isacharbraceright}{\isachardoublequoteclose}\ \isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}auto\ simp\ del{\isacharcolon}One{\isacharunderscore}nat{\isacharunderscore}def{\isacharparenright}\isanewline
+\ \ \ \ \ \ \ \ \ \ \ \ \isacommand{then}\isamarkupfalse%
+\ \isacommand{have}\isamarkupfalse%
+\ {\isachardoublequoteopen}{\isacharquery}M{\isadigit{0}}{\isadigit{1}}\ {\isacharequal}\ {\isacharparenleft}{\isasymSum}i{\isasymin}{\isacharbraceleft}{\isacharbraceright}{\isachardot}\ card\ {\isacharparenleft}matching{\isacharunderscore}i\ i\ M{\isacharparenright}{\isacharparenright}{\isachardoublequoteclose}\ \isacommand{by}\isamarkupfalse%
+\ auto\isanewline
+\ \ \ \ \ \ \ \ \ \ \ \ \isacommand{thus}\isamarkupfalse%
+\ {\isacharquery}thesis\ \isacommand{by}\isamarkupfalse%
+\ simp\isanewline
+\ \ \ \ \ \ \ \ \ \ \isacommand{qed}\isamarkupfalse%
+\isanewline
+\ \ \ \ \ \ \ \ \isacommand{qed}\isamarkupfalse%
+\isanewline
+\ \ \ \ \ \ \isacommand{moreover}\isamarkupfalse%
+\isanewline
+\ \ \ \ \ \ \isacommand{have}\isamarkupfalse%
+\ {\isadigit{3}}{\isacharcolon}\ {\isachardoublequoteopen}{\isacharquery}Mgr{\isadigit{1}}\ {\isasymle}\ {\isacharparenleft}{\isasymSum}i{\isacharbar}i{\isasymin}L\ {\isacharbackquote}\ verts\ G\ {\isasymand}\ {\isadigit{1}}\ {\isacharless}\ i{\isachardot}\ N\ {\isacharparenleft}verts\ G{\isacharparenright}\ L\ i\ div\ {\isadigit{2}}{\isacharparenright}{\isachardoublequoteclose}\ \isanewline
+\ \ \ \ \ \ \ \ \isacommand{using}\isamarkupfalse%
+\ assms\isanewline
+\ \ \ \ \ \ \ \ \isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}intro\ setsum{\isacharunderscore}mono\ card{\isacharunderscore}Mi{\isacharunderscore}le{\isacharunderscore}floor{\isacharunderscore}div{\isacharunderscore}{\isadigit{2}}{\isacharunderscore}NVLi{\isacharcomma}\ simp{\isacharparenright}\isanewline
+\ \ \ \ \isacommand{ultimately}\isamarkupfalse%
+\isanewline
+\ \ \ \ \isacommand{show}\isamarkupfalse%
+\ {\isacharquery}thesis\ \isacommand{using}\isamarkupfalse%
+\ {\isadigit{1}}\ {\isadigit{2}}\ {\isadigit{3}}\ assms\ \isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}simp\ add{\isacharcolon}\ weight{\isacharunderscore}def{\isacharparenright}\isanewline
+\ \ \isacommand{qed}\isamarkupfalse%
+\isanewline
+\ \ \isacommand{ultimately}\isamarkupfalse%
+\ \isacommand{show}\isamarkupfalse%
+\ {\isacharquery}thesis\ \isacommand{by}\isamarkupfalse%
+\ simp\isanewline
+\isacommand{qed}\isamarkupfalse%
+%
+\endisatagproof
+{\isafoldproof}%
+%
+\isadelimproof
+\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \isanewline
+%
+\endisadelimproof
+\isanewline
+\isacommand{theorem}\isamarkupfalse%
+\ maximum{\isacharunderscore}cardinality{\isacharunderscore}matching{\isacharcolon}\isanewline
+\ \ {\isachardoublequoteopen}matching\ G\ M{\isacharprime}\ {\isasymlongrightarrow}\ card\ M{\isacharprime}\ {\isasymle}\ card\ maxM{\isachardoublequoteclose}\isanewline
+%
+\isadelimproof
+\ \ %
+\endisadelimproof
+%
+\isatagproof
+\isacommand{using}\isamarkupfalse%
+\ card{\isacharunderscore}M{\isacharunderscore}le{\isacharunderscore}weight{\isacharunderscore}NVLi\ OSC\ matching\ weight\isanewline
+\ \ \isacommand{by}\isamarkupfalse%
+\ simp%
+\endisatagproof
+{\isafoldproof}%
+%
+\isadelimproof
+\isanewline
+%
+\endisadelimproof
+\isanewline
+\isacommand{end}\isamarkupfalse%
+\isanewline
+%
+\isadelimtheory
+\isanewline
+%
+\endisadelimtheory
+%
+\isatagtheory
+\isacommand{end}\isamarkupfalse%
+%
+\endisatagtheory
+{\isafoldtheory}%
+%
+\isadelimtheory
+%
+\endisadelimtheory
+\end{isabellebody}%
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "root"
+%%% End:

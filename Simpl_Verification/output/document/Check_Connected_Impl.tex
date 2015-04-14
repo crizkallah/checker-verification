@@ -1,0 +1,168 @@
+%
+\begin{isabellebody}%
+\def\isabellecontext{Check{\isacharunderscore}Connected{\isacharunderscore}Impl}%
+%
+\isadelimtheory
+%
+\endisadelimtheory
+%
+\isatagtheory
+\isacommand{theory}\isamarkupfalse%
+\ Check{\isacharunderscore}Connected{\isacharunderscore}Impl\isanewline
+\isakeyword{imports}\isanewline
+\ \ {\isachardoublequoteopen}Vcg{\isachardoublequoteclose}\isanewline
+\ \ {\isachardoublequoteopen}{\isachardot}{\isachardot}{\isacharslash}Witness{\isacharunderscore}Property{\isacharslash}Connected{\isacharunderscore}Components{\isachardoublequoteclose}\isanewline
+\isakeyword{begin}%
+\endisatagtheory
+{\isafoldtheory}%
+%
+\isadelimtheory
+\isanewline
+%
+\endisadelimtheory
+\isanewline
+\isacommand{type{\isacharunderscore}synonym}\isamarkupfalse%
+\ IVertex\ {\isacharequal}\ nat\isanewline
+\isacommand{type{\isacharunderscore}synonym}\isamarkupfalse%
+\ IEdge{\isacharunderscore}Id\ {\isacharequal}\ nat\isanewline
+\isacommand{type{\isacharunderscore}synonym}\isamarkupfalse%
+\ IEdge\ {\isacharequal}\ {\isachardoublequoteopen}IVertex\ {\isasymtimes}\ IVertex{\isachardoublequoteclose}\isanewline
+\isacommand{type{\isacharunderscore}synonym}\isamarkupfalse%
+\ IPEdge\ {\isacharequal}\ {\isachardoublequoteopen}IVertex\ {\isasymRightarrow}\ IEdge{\isacharunderscore}Id\ option{\isachardoublequoteclose}\isanewline
+\isacommand{type{\isacharunderscore}synonym}\isamarkupfalse%
+\ INum\ {\isacharequal}\ {\isachardoublequoteopen}IVertex\ {\isasymRightarrow}\ nat{\isachardoublequoteclose}\isanewline
+\isacommand{type{\isacharunderscore}synonym}\isamarkupfalse%
+\ IGraph\ {\isacharequal}\ {\isachardoublequoteopen}nat\ {\isasymtimes}\ nat\ {\isasymtimes}\ {\isacharparenleft}IEdge{\isacharunderscore}Id\ {\isasymRightarrow}\ IEdge{\isacharparenright}{\isachardoublequoteclose}\ \isanewline
+\isanewline
+\isacommand{abbreviation}\isamarkupfalse%
+\ ivertex{\isacharunderscore}cnt\ {\isacharcolon}{\isacharcolon}\ {\isachardoublequoteopen}IGraph\ {\isasymRightarrow}\ nat{\isachardoublequoteclose}\isanewline
+\ \ \isakeyword{where}\ {\isachardoublequoteopen}ivertex{\isacharunderscore}cnt\ G\ {\isasymequiv}\ fst\ G{\isachardoublequoteclose}\isanewline
+\isanewline
+\isacommand{abbreviation}\isamarkupfalse%
+\ iedge{\isacharunderscore}cnt\ {\isacharcolon}{\isacharcolon}\ {\isachardoublequoteopen}IGraph\ {\isasymRightarrow}\ nat{\isachardoublequoteclose}\isanewline
+\ \ \isakeyword{where}\ {\isachardoublequoteopen}iedge{\isacharunderscore}cnt\ G\ {\isasymequiv}\ fst\ {\isacharparenleft}snd\ G{\isacharparenright}{\isachardoublequoteclose}\isanewline
+\isanewline
+\isacommand{abbreviation}\isamarkupfalse%
+\ iedges\ {\isacharcolon}{\isacharcolon}\ {\isachardoublequoteopen}IGraph\ {\isasymRightarrow}\ IEdge{\isacharunderscore}Id\ {\isasymRightarrow}\ IEdge{\isachardoublequoteclose}\isanewline
+\ \ \isakeyword{where}\ {\isachardoublequoteopen}iedges\ G\ {\isasymequiv}\ snd\ {\isacharparenleft}snd\ G{\isacharparenright}{\isachardoublequoteclose}\isanewline
+\isanewline
+\isacommand{definition}\isamarkupfalse%
+\ is{\isacharunderscore}wellformed{\isacharunderscore}inv\ {\isacharcolon}{\isacharcolon}\ {\isachardoublequoteopen}IGraph\ {\isasymRightarrow}\ nat\ {\isasymRightarrow}\ bool{\isachardoublequoteclose}\ \isakeyword{where}\isanewline
+\ \ {\isachardoublequoteopen}is{\isacharunderscore}wellformed{\isacharunderscore}inv\ G\ i\ {\isasymequiv}\ {\isasymforall}k\ {\isacharless}\ i{\isachardot}\ ivertex{\isacharunderscore}cnt\ G\ {\isachargreater}\ fst\ {\isacharparenleft}iedges\ G\ k{\isacharparenright}\isanewline
+\ \ \ \ \ \ \ \ {\isasymand}\ ivertex{\isacharunderscore}cnt\ G\ {\isachargreater}\ snd\ {\isacharparenleft}iedges\ G\ k{\isacharparenright}{\isachardoublequoteclose}\isanewline
+%
+\isadelimML
+%
+\endisadelimML
+%
+\isatagML
+\isacommand{ML}\isamarkupfalse%
+\ {\isacharverbatimopen}\ Toplevel{\isachardot}theory\ {\isacharverbatimclose}%
+\endisatagML
+{\isafoldML}%
+%
+\isadelimML
+\isanewline
+%
+\endisadelimML
+\isacommand{procedures}\isamarkupfalse%
+\ is{\isacharunderscore}wellformed\ {\isacharparenleft}G\ {\isacharcolon}{\isacharcolon}\ IGraph\ {\isacharbar}\ R\ {\isacharcolon}{\isacharcolon}\ bool{\isacharparenright}\isanewline
+\ \ \isakeyword{where}\isanewline
+\ \ \ \ i\ {\isacharcolon}{\isacharcolon}\ nat\isanewline
+\ \ \ \ e\ {\isacharcolon}{\isacharcolon}\ IEdge\isanewline
+\ \ \isakeyword{in}\ {\isachardoublequoteopen}\isanewline
+\ \ \ \ ANNO\ G{\isachardot}{\isasymlbrace}\ {\isasymacute}G\ {\isacharequal}\ G\ {\isasymrbrace}\isanewline
+\ \ \ \ \ \ {\isasymacute}R\ {\isacharcolon}{\isacharequal}{\isacharequal}\ True\ {\isacharsemicolon}{\isacharsemicolon}\isanewline
+\ \ \ \ \ \ {\isasymacute}i\ {\isacharcolon}{\isacharequal}{\isacharequal}\ {\isadigit{0}}\ {\isacharsemicolon}{\isacharsemicolon}\isanewline
+\ \ \ \ \ \ TRY\isanewline
+\ \ \ \ \ \ \ \ WHILE\ {\isasymacute}i\ {\isacharless}\ iedge{\isacharunderscore}cnt\ {\isasymacute}G\isanewline
+\ \ \ \ \ \ \ \ INV\ {\isasymlbrace}\ {\isasymacute}R\ {\isacharequal}\ is{\isacharunderscore}wellformed{\isacharunderscore}inv\ {\isasymacute}G\ {\isasymacute}i\ {\isasymand}\ \isanewline
+\ \ \ \ \ \ \ \ \ \ \ \ \ \ {\isasymacute}i\ {\isasymle}\ iedge{\isacharunderscore}cnt\ {\isasymacute}G\ {\isasymand}\ {\isasymacute}G\ {\isacharequal}\ G\ {\isasymrbrace}\isanewline
+\ \ \ \ \ \ \ \ VAR\ MEASURE\ {\isacharparenleft}iedge{\isacharunderscore}cnt\ {\isasymacute}G\ {\isacharminus}\ {\isasymacute}i{\isacharparenright}\isanewline
+\ \ \ \ \ \ \ \ DO\isanewline
+\ \ \ \ \ \ \ \ \ {\isasymacute}e\ {\isacharcolon}{\isacharequal}{\isacharequal}\ iedges\ {\isasymacute}G\ {\isasymacute}i\ {\isacharsemicolon}{\isacharsemicolon}\isanewline
+\ \ \ \ \ \ \ \ \ IF\ ivertex{\isacharunderscore}cnt\ {\isasymacute}G\ {\isasymle}\ fst\ {\isasymacute}e\ {\isasymor}\ ivertex{\isacharunderscore}cnt\ {\isasymacute}G\ {\isasymle}\ snd\ {\isasymacute}e\ THEN\isanewline
+\ \ \ \ \ \ \ \ \ \ \ {\isasymacute}R\ {\isacharcolon}{\isacharequal}{\isacharequal}\ False\ {\isacharsemicolon}{\isacharsemicolon}\isanewline
+\ \ \ \ \ \ \ \ \ \ \ THROW\isanewline
+\ \ \ \ \ \ \ \ \ FI\ {\isacharsemicolon}{\isacharsemicolon}\isanewline
+\ \ \ \ \ \ \ \ \ {\isasymacute}i\ {\isacharcolon}{\isacharequal}{\isacharequal}\ {\isasymacute}i\ {\isacharplus}\ {\isadigit{1}}\isanewline
+\ \ \ \ \ \ \ \ OD\isanewline
+\ \ \ \ \ \ CATCH\ SKIP\ END\isanewline
+\ \ \ \ \ \ {\isasymlbrace}\ {\isasymacute}G\ {\isacharequal}\ G\ {\isasymand}\ \isanewline
+\ \ \ \ \ \ \ \ {\isasymacute}R\ {\isacharequal}\ is{\isacharunderscore}wellformed{\isacharunderscore}inv\ {\isasymacute}G\ {\isacharparenleft}iedge{\isacharunderscore}cnt\ {\isasymacute}G{\isacharparenright}\ {\isasymrbrace}{\isachardoublequoteclose}\isanewline
+\isanewline
+\isacommand{definition}\isamarkupfalse%
+\ parent{\isacharunderscore}num{\isacharunderscore}assms{\isacharunderscore}inv\ {\isacharcolon}{\isacharcolon}\ {\isachardoublequoteopen}IGraph\ {\isasymRightarrow}\ IVertex\ {\isasymRightarrow}\ IPEdge\ {\isasymRightarrow}\ INum\ {\isasymRightarrow}\ nat\ {\isasymRightarrow}\ bool{\isachardoublequoteclose}\ \isakeyword{where}\isanewline
+\ \ {\isachardoublequoteopen}parent{\isacharunderscore}num{\isacharunderscore}assms{\isacharunderscore}inv\ G\ r\ p\ n\ k\ {\isasymequiv}\ {\isasymforall}i\ {\isacharless}\ k{\isachardot}\ i\ {\isasymnoteq}\ r\ {\isasymlongrightarrow}\ {\isacharparenleft}case\ p\ i\ of\isanewline
+\ \ \ \ \ \ None\ {\isasymRightarrow}\ False\isanewline
+\ \ \ \ {\isacharbar}\ Some\ x\ {\isasymRightarrow}\ x\ {\isacharless}\ iedge{\isacharunderscore}cnt\ G\ {\isasymand}\ snd\ {\isacharparenleft}iedges\ G\ x{\isacharparenright}\ {\isacharequal}\ i\ {\isasymand}\ n\ i\ {\isacharequal}\ n\ {\isacharparenleft}fst\ {\isacharparenleft}iedges\ G\ x{\isacharparenright}{\isacharparenright}\ {\isacharplus}\ {\isadigit{1}}{\isacharparenright}{\isachardoublequoteclose}\isanewline
+\isanewline
+\isacommand{procedures}\isamarkupfalse%
+\ parent{\isacharunderscore}num{\isacharunderscore}assms\ {\isacharparenleft}G\ {\isacharcolon}{\isacharcolon}\ IGraph{\isacharcomma}\ r\ {\isacharcolon}{\isacharcolon}\ IVertex{\isacharcomma}\ parent{\isacharunderscore}edge\ {\isacharcolon}{\isacharcolon}\ IPEdge{\isacharcomma}\isanewline
+\ \ \ \ num\ {\isacharcolon}{\isacharcolon}\ INum\ {\isacharbar}\ R\ {\isacharcolon}{\isacharcolon}\ bool{\isacharparenright}\isanewline
+\ \ \isakeyword{where}\isanewline
+\ \ \ \ vertex\ {\isacharcolon}{\isacharcolon}\ IVertex\isanewline
+\ \ \ \ edge{\isacharunderscore}id\ {\isacharcolon}{\isacharcolon}\ IEdge{\isacharunderscore}Id\isanewline
+\ \ \isakeyword{in}\ {\isachardoublequoteopen}\isanewline
+\ \ \ \ ANNO\ {\isacharparenleft}G{\isacharcomma}r{\isacharcomma}p{\isacharcomma}n{\isacharparenright}{\isachardot}\isanewline
+\ \ \ \ \ \ {\isasymlbrace}\ {\isasymacute}G\ {\isacharequal}\ G\ {\isasymand}\ {\isasymacute}r\ {\isacharequal}\ r\ {\isasymand}\ {\isasymacute}parent{\isacharunderscore}edge\ {\isacharequal}\ p\ {\isasymand}\ {\isasymacute}num\ {\isacharequal}\ n\ {\isasymrbrace}\isanewline
+\ \ \ \ \ \ {\isasymacute}R\ {\isacharcolon}{\isacharequal}{\isacharequal}\ True\ {\isacharsemicolon}{\isacharsemicolon}\isanewline
+\ \ \ \ \ \ {\isasymacute}vertex\ {\isacharcolon}{\isacharequal}{\isacharequal}\ {\isadigit{0}}\ {\isacharsemicolon}{\isacharsemicolon}\isanewline
+\ \ \ \ \ \ TRY\isanewline
+\ \ \ \ \ \ \ \ WHILE\ {\isasymacute}vertex\ {\isacharless}\ ivertex{\isacharunderscore}cnt\ {\isasymacute}G\isanewline
+\ \ \ \ \ \ \ \ INV\ {\isasymlbrace}\ {\isasymacute}R\ {\isacharequal}\ parent{\isacharunderscore}num{\isacharunderscore}assms{\isacharunderscore}inv\ {\isasymacute}G\ {\isasymacute}r\ {\isasymacute}parent{\isacharunderscore}edge\ {\isasymacute}num\ {\isasymacute}vertex\isanewline
+\ \ \ \ \ \ \ \ \ \ {\isasymand}\ {\isasymacute}G\ {\isacharequal}\ G\ {\isasymand}\ {\isasymacute}r\ {\isacharequal}\ r\ {\isasymand}\ {\isasymacute}parent{\isacharunderscore}edge\ {\isacharequal}\ p\ {\isasymand}\ {\isasymacute}num\ {\isacharequal}\ n\isanewline
+\ \ \ \ \ \ \ \ \ \ {\isasymand}\ {\isasymacute}vertex\ {\isasymle}\ ivertex{\isacharunderscore}cnt\ {\isasymacute}G{\isasymrbrace}\isanewline
+\ \ \ \ \ \ \ \ VAR\ MEASURE\ {\isacharparenleft}ivertex{\isacharunderscore}cnt\ {\isasymacute}G\ {\isacharminus}\ {\isasymacute}vertex{\isacharparenright}\isanewline
+\ \ \ \ \ \ \ \ DO\isanewline
+\ \ \ \ \ \ \ \ \ \ IF\ {\isacharparenleft}{\isasymacute}vertex\ {\isasymnoteq}\ {\isasymacute}r{\isacharparenright}\ THEN\isanewline
+\ \ \ \ \ \ \ \ \ \ \ \ IF\ {\isasymacute}parent{\isacharunderscore}edge\ {\isasymacute}vertex\ {\isacharequal}\ None\ THEN\isanewline
+\ \ \ \ \ \ \ \ \ \ \ \ \ \ {\isasymacute}R\ {\isacharcolon}{\isacharequal}{\isacharequal}\ False\ {\isacharsemicolon}{\isacharsemicolon}\isanewline
+\ \ \ \ \ \ \ \ \ \ \ \ \ \ THROW\isanewline
+\ \ \ \ \ \ \ \ \ \ \ \ FI\ {\isacharsemicolon}{\isacharsemicolon}\isanewline
+\ \ \ \ \ \ \ \ \ \ \ \ {\isasymacute}edge{\isacharunderscore}id\ {\isacharcolon}{\isacharequal}{\isacharequal}\ the\ {\isacharparenleft}{\isasymacute}parent{\isacharunderscore}edge\ {\isasymacute}vertex{\isacharparenright}\ {\isacharsemicolon}{\isacharsemicolon}\isanewline
+\ \ \ \ \ \ \ \ \ \ \ \ IF\ {\isasymacute}edge{\isacharunderscore}id\ {\isasymge}\ iedge{\isacharunderscore}cnt\ {\isasymacute}G\isanewline
+\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ {\isasymor}\ snd\ {\isacharparenleft}iedges\ {\isasymacute}G\ {\isasymacute}edge{\isacharunderscore}id{\isacharparenright}\ {\isasymnoteq}\ {\isasymacute}vertex\isanewline
+\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ {\isasymor}\ {\isasymacute}num\ {\isasymacute}vertex\ {\isasymnoteq}\ {\isasymacute}num\ {\isacharparenleft}fst\ {\isacharparenleft}iedges\ {\isasymacute}G\ {\isasymacute}edge{\isacharunderscore}id{\isacharparenright}{\isacharparenright}\ {\isacharplus}\ {\isadigit{1}}\ THEN\isanewline
+\ \ \ \ \ \ \ \ \ \ \ \ \ \ {\isasymacute}R\ {\isacharcolon}{\isacharequal}{\isacharequal}\ False\ {\isacharsemicolon}{\isacharsemicolon}\isanewline
+\ \ \ \ \ \ \ \ \ \ \ \ \ \ THROW\isanewline
+\ \ \ \ \ \ \ \ \ \ \ \ FI\isanewline
+\ \ \ \ \ \ \ \ \ \ FI\ {\isacharsemicolon}{\isacharsemicolon}\isanewline
+\ \ \ \ \ \ \ \ \ \ {\isasymacute}vertex\ {\isacharcolon}{\isacharequal}{\isacharequal}\ {\isasymacute}vertex\ {\isacharplus}\ {\isadigit{1}}\isanewline
+\ \ \ \ \ \ \ \ OD\isanewline
+\ \ \ \ \ \ CATCH\ SKIP\ END\isanewline
+\ \ \ \ {\isasymlbrace}\ {\isasymacute}G\ {\isacharequal}\ G\ {\isasymand}\ {\isasymacute}r\ {\isacharequal}\ r\ {\isasymand}\ {\isasymacute}parent{\isacharunderscore}edge\ {\isacharequal}\ p\ {\isasymand}\ {\isasymacute}num\ {\isacharequal}\ n\isanewline
+\ \ \ \ \ \ {\isasymand}\ {\isasymacute}R\ {\isacharequal}\ parent{\isacharunderscore}num{\isacharunderscore}assms{\isacharunderscore}inv\ {\isasymacute}G\ {\isasymacute}r\ {\isasymacute}parent{\isacharunderscore}edge\ {\isasymacute}num\ {\isacharparenleft}ivertex{\isacharunderscore}cnt\ {\isasymacute}G{\isacharparenright}{\isasymrbrace}{\isachardoublequoteclose}\isanewline
+\isanewline
+\isacommand{procedures}\isamarkupfalse%
+\ check{\isacharunderscore}connected\ {\isacharparenleft}G\ {\isacharcolon}{\isacharcolon}\ IGraph{\isacharcomma}\ r\ {\isacharcolon}{\isacharcolon}\ IVertex{\isacharcomma}\ parent{\isacharunderscore}edge\ {\isacharcolon}{\isacharcolon}\ IPEdge{\isacharcomma}\isanewline
+\ \ \ \ num\ {\isacharcolon}{\isacharcolon}\ INum\ {\isacharbar}\ R\ {\isacharcolon}{\isacharcolon}\ bool{\isacharparenright}\isanewline
+\ \ \isakeyword{where}\isanewline
+\ \ \ \ R{\isadigit{1}}\ {\isacharcolon}{\isacharcolon}\ bool\isanewline
+\ \ \ \ R{\isadigit{2}}\ {\isacharcolon}{\isacharcolon}\ bool\isanewline
+\ \ \ \ R{\isadigit{3}}\ {\isacharcolon}{\isacharcolon}\ bool\isanewline
+\ \ \isakeyword{in}\ {\isachardoublequoteopen}\isanewline
+\ \ \ \ {\isasymacute}R{\isadigit{1}}\ {\isacharcolon}{\isacharequal}{\isacharequal}\ CALL\ is{\isacharunderscore}wellformed{\isacharparenleft}{\isasymacute}G{\isacharparenright}\ {\isacharsemicolon}{\isacharsemicolon}\isanewline
+\ \ \ \ {\isasymacute}R{\isadigit{2}}\ {\isacharcolon}{\isacharequal}{\isacharequal}\ {\isasymacute}r\ {\isacharless}\ ivertex{\isacharunderscore}cnt\ {\isasymacute}G\ {\isasymand}\ {\isasymacute}num\ {\isasymacute}r\ {\isacharequal}\ {\isadigit{0}}\ {\isasymand}\ {\isasymacute}parent{\isacharunderscore}edge\ {\isasymacute}r\ {\isacharequal}\ None\ {\isacharsemicolon}{\isacharsemicolon}\isanewline
+\ \ \ \ {\isasymacute}R{\isadigit{3}}\ {\isacharcolon}{\isacharequal}{\isacharequal}\ CALL\ parent{\isacharunderscore}num{\isacharunderscore}assms{\isacharparenleft}{\isasymacute}G{\isacharcomma}\ {\isasymacute}r{\isacharcomma}\ {\isasymacute}parent{\isacharunderscore}edge{\isacharcomma}\ {\isasymacute}num{\isacharparenright}\ {\isacharsemicolon}{\isacharsemicolon}\isanewline
+\ \ \ \ {\isasymacute}R\ {\isacharcolon}{\isacharequal}{\isacharequal}\ {\isasymacute}R{\isadigit{1}}\ {\isasymand}\ {\isasymacute}R{\isadigit{2}}\ {\isasymand}\ {\isasymacute}R{\isadigit{3}}{\isachardoublequoteclose}\isanewline
+%
+\isadelimtheory
+\isanewline
+%
+\endisadelimtheory
+%
+\isatagtheory
+\isacommand{end}\isamarkupfalse%
+%
+\endisatagtheory
+{\isafoldtheory}%
+%
+\isadelimtheory
+%
+\endisadelimtheory
+\end{isabellebody}%
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "root"
+%%% End:

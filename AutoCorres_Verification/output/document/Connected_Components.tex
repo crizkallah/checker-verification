@@ -1,0 +1,288 @@
+%
+\begin{isabellebody}%
+\def\isabellecontext{Connected{\isacharunderscore}Components}%
+%
+\isadelimtheory
+%
+\endisadelimtheory
+%
+\isatagtheory
+\isacommand{theory}\isamarkupfalse%
+\ Connected{\isacharunderscore}Components\isanewline
+\isakeyword{imports}\ {\isachardoublequoteopen}{\isachardot}{\isachardot}{\isacharslash}Graph{\isacharunderscore}Theory{\isacharslash}Graph{\isacharunderscore}Theory{\isachardoublequoteclose}\isanewline
+\isakeyword{begin}%
+\endisatagtheory
+{\isafoldtheory}%
+%
+\isadelimtheory
+\isanewline
+%
+\endisadelimtheory
+\isanewline
+\isacommand{locale}\isamarkupfalse%
+\ connected{\isacharunderscore}components{\isacharunderscore}locale\ {\isacharequal}\isanewline
+\ \ fin{\isacharunderscore}digraph\ {\isacharplus}\isanewline
+\ \ \isakeyword{fixes}\ num\ {\isacharcolon}{\isacharcolon}\ {\isachardoublequoteopen}{\isacharprime}a\ {\isasymRightarrow}\ nat{\isachardoublequoteclose}\isanewline
+\ \ \isakeyword{fixes}\ parent{\isacharunderscore}edge\ {\isacharcolon}{\isacharcolon}\ {\isachardoublequoteopen}{\isacharprime}a\ {\isasymRightarrow}\ {\isacharprime}b\ option{\isachardoublequoteclose}\isanewline
+\ \ \isakeyword{fixes}\ r\ {\isacharcolon}{\isacharcolon}\ {\isacharprime}a\isanewline
+\ \ \isakeyword{assumes}\ r{\isacharunderscore}assms{\isacharcolon}\ {\isachardoublequoteopen}r\ {\isasymin}\ verts\ G\ {\isasymand}\ parent{\isacharunderscore}edge\ r\ {\isacharequal}\ None\ {\isasymand}\ num\ r\ {\isacharequal}\ {\isadigit{0}}{\isachardoublequoteclose}\isanewline
+\ \ \isakeyword{assumes}\ parent{\isacharunderscore}num{\isacharunderscore}assms{\isacharcolon}\ \isanewline
+\ \ \ \ {\isachardoublequoteopen}{\isasymAnd}v{\isachardot}\ v\ {\isasymin}\ verts\ G\ {\isasymand}\ v\ {\isasymnoteq}\ r\ {\isasymLongrightarrow}\isanewline
+\ \ \ \ \ \ \ {\isasymexists}e\ {\isasymin}\ arcs\ G{\isachardot}\isanewline
+\ \ \ \ \ \ \ \ \ parent{\isacharunderscore}edge\ v\ {\isacharequal}\ Some\ e\ {\isasymand}\isanewline
+\ \ \ \ \ \ \ \ \ head\ G\ e\ {\isacharequal}\ v\ {\isasymand}\isanewline
+\ \ \ \ \ \ \ \ \ num\ v\ {\isacharequal}\ \ num\ {\isacharparenleft}tail\ G\ e{\isacharparenright}\ {\isacharplus}\ {\isadigit{1}}{\isachardoublequoteclose}\isanewline
+\isanewline
+\isacommand{sublocale}\isamarkupfalse%
+\ connected{\isacharunderscore}components{\isacharunderscore}locale\ {\isasymsubseteq}\ fin{\isacharunderscore}digraph\ G\isanewline
+%
+\isadelimproof
+\ \ %
+\endisadelimproof
+%
+\isatagproof
+\isacommand{by}\isamarkupfalse%
+\ auto%
+\endisatagproof
+{\isafoldproof}%
+%
+\isadelimproof
+\isanewline
+%
+\endisadelimproof
+\isanewline
+\isacommand{context}\isamarkupfalse%
+\ connected{\isacharunderscore}components{\isacharunderscore}locale\isanewline
+\isakeyword{begin}\isanewline
+\isanewline
+\isacommand{lemma}\isamarkupfalse%
+\ ccl{\isacharunderscore}wellformed{\isacharcolon}\ {\isachardoublequoteopen}wf{\isacharunderscore}digraph\ G{\isachardoublequoteclose}\isanewline
+%
+\isadelimproof
+\ \ %
+\endisadelimproof
+%
+\isatagproof
+\isacommand{by}\isamarkupfalse%
+\ unfold{\isacharunderscore}locales%
+\endisatagproof
+{\isafoldproof}%
+%
+\isadelimproof
+\isanewline
+%
+\endisadelimproof
+\isanewline
+\isacommand{lemma}\isamarkupfalse%
+\ num{\isacharunderscore}r{\isacharunderscore}is{\isacharunderscore}min{\isacharcolon}\isanewline
+\ \ \isakeyword{assumes}\ {\isachardoublequoteopen}v\ {\isasymin}\ verts\ G{\isachardoublequoteclose}\ \isanewline
+\ \ \isakeyword{assumes}\ {\isachardoublequoteopen}v\ {\isasymnoteq}\ r{\isachardoublequoteclose}\isanewline
+\ \ \isakeyword{shows}\ {\isachardoublequoteopen}num\ v\ {\isachargreater}\ {\isadigit{0}}{\isachardoublequoteclose}\isanewline
+%
+\isadelimproof
+\ \ %
+\endisadelimproof
+%
+\isatagproof
+\isacommand{using}\isamarkupfalse%
+\ parent{\isacharunderscore}num{\isacharunderscore}assms\ assms\isanewline
+\ \ \isacommand{by}\isamarkupfalse%
+\ fastforce%
+\endisatagproof
+{\isafoldproof}%
+%
+\isadelimproof
+\isanewline
+%
+\endisadelimproof
+\isanewline
+\isacommand{lemma}\isamarkupfalse%
+\ path{\isacharunderscore}from{\isacharunderscore}root{\isacharcolon}\isanewline
+\ \ \isakeyword{fixes}\ v\ {\isacharcolon}{\isacharcolon}\ {\isacharprime}a\isanewline
+\ \ \isakeyword{assumes}\ {\isachardoublequoteopen}v\ {\isasymin}\ verts\ G{\isachardoublequoteclose}\isanewline
+\ \ \isakeyword{shows}\ {\isachardoublequoteopen}r\ {\isasymrightarrow}\isactrlsup {\isacharasterisk}\ v{\isachardoublequoteclose}\isanewline
+%
+\isadelimproof
+\ \ %
+\endisadelimproof
+%
+\isatagproof
+\isacommand{using}\isamarkupfalse%
+\ assms\isanewline
+\isacommand{proof}\isamarkupfalse%
+\ {\isacharparenleft}induct\ {\isachardoublequoteopen}num\ v{\isachardoublequoteclose}\ arbitrary{\isacharcolon}\ v{\isacharparenright}\isanewline
+\ \ \isacommand{case}\isamarkupfalse%
+\ {\isadigit{0}}\isanewline
+\ \ \isacommand{hence}\isamarkupfalse%
+\ {\isachardoublequoteopen}v\ {\isacharequal}\ r{\isachardoublequoteclose}\ \isacommand{using}\isamarkupfalse%
+\ num{\isacharunderscore}r{\isacharunderscore}is{\isacharunderscore}min\ \isacommand{by}\isamarkupfalse%
+\ fastforce\isanewline
+\ \ \isacommand{with}\isamarkupfalse%
+\ {\isacharbackquoteopen}v\ {\isasymin}\ verts\ G{\isacharbackquoteclose}\ \isacommand{show}\isamarkupfalse%
+\ {\isacharquery}case\ \isacommand{by}\isamarkupfalse%
+\ auto\isanewline
+\isacommand{next}\isamarkupfalse%
+\isanewline
+\ \ \isacommand{case}\isamarkupfalse%
+\ {\isacharparenleft}Suc\ n{\isacharprime}{\isacharparenright}\isanewline
+\ \ \isacommand{hence}\isamarkupfalse%
+\ {\isachardoublequoteopen}v\ {\isasymnoteq}\ r{\isachardoublequoteclose}\ \isacommand{using}\isamarkupfalse%
+\ r{\isacharunderscore}assms\ \isacommand{by}\isamarkupfalse%
+\ auto\isanewline
+\ \ \isacommand{then}\isamarkupfalse%
+\ \isacommand{obtain}\isamarkupfalse%
+\ e\ \isakeyword{where}\ ee{\isacharcolon}\isanewline
+\ \ \ \ {\isachardoublequoteopen}e\ {\isasymin}\ arcs\ G{\isachardoublequoteclose}\isanewline
+\ \ \ \ {\isachardoublequoteopen}head\ G\ e\ {\isacharequal}\ v\ {\isasymand}\ num\ v\ {\isacharequal}\ num\ {\isacharparenleft}tail\ G\ e{\isacharparenright}\ {\isacharplus}\ {\isadigit{1}}{\isachardoublequoteclose}\ \ \isanewline
+\ \ \ \ \isacommand{using}\isamarkupfalse%
+\ Suc\ parent{\isacharunderscore}num{\isacharunderscore}assms\ \isacommand{by}\isamarkupfalse%
+\ blast\isanewline
+\ \ \isacommand{with}\isamarkupfalse%
+\ {\isacharbackquoteopen}v\ {\isasymin}\ verts\ G{\isacharbackquoteclose}\ Suc{\isacharparenleft}{\isadigit{1}}{\isacharcomma}{\isadigit{2}}{\isacharparenright}\ tail{\isacharunderscore}in{\isacharunderscore}verts\isanewline
+\ \ \isacommand{have}\isamarkupfalse%
+\ {\isachardoublequoteopen}r\ {\isasymrightarrow}\isactrlsup {\isacharasterisk}\ {\isacharparenleft}tail\ G\ e{\isacharparenright}{\isachardoublequoteclose}\ {\isachardoublequoteopen}tail\ G\ e\ {\isasymrightarrow}\ v{\isachardoublequoteclose}\isanewline
+\ \ \ \ \isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}auto\ intro{\isacharcolon}\ in{\isacharunderscore}arcs{\isacharunderscore}imp{\isacharunderscore}in{\isacharunderscore}arcs{\isacharunderscore}ends{\isacharparenright}\isanewline
+\ \ \isacommand{then}\isamarkupfalse%
+\ \isacommand{show}\isamarkupfalse%
+\ {\isacharquery}case\ \isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}rule\ reachable{\isacharunderscore}adj{\isacharunderscore}trans{\isacharparenright}\isanewline
+\isacommand{qed}\isamarkupfalse%
+%
+\endisatagproof
+{\isafoldproof}%
+%
+\isadelimproof
+%
+\endisadelimproof
+%
+\begin{isamarkuptext}%
+The underlying undirected, simple graph is connected%
+\end{isamarkuptext}%
+\isamarkuptrue%
+\isacommand{lemma}\isamarkupfalse%
+\ connectedG{\isacharcolon}\ {\isachardoublequoteopen}connected\ G{\isachardoublequoteclose}\isanewline
+%
+\isadelimproof
+%
+\endisadelimproof
+%
+\isatagproof
+\isacommand{proof}\isamarkupfalse%
+\ {\isacharparenleft}unfold\ connected{\isacharunderscore}def{\isacharcomma}\ intro\ strongly{\isacharunderscore}connectedI{\isacharparenright}\isanewline
+\ \ \ \ \isacommand{show}\isamarkupfalse%
+\ {\isachardoublequoteopen}verts\ {\isacharparenleft}with{\isacharunderscore}proj\ {\isacharparenleft}mk{\isacharunderscore}symmetric\ G{\isacharparenright}{\isacharparenright}\ {\isasymnoteq}\ {\isacharbraceleft}{\isacharbraceright}{\isachardoublequoteclose}\ \isanewline
+\ \ \ \ \ \ \isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}metis\ equals{\isadigit{0}}D\ r{\isacharunderscore}assms\ reachable{\isacharunderscore}in{\isacharunderscore}vertsE\ reachable{\isacharunderscore}mk{\isacharunderscore}symmetricI\ reachable{\isacharunderscore}refl{\isacharparenright}\isanewline
+\ \ \isacommand{next}\isamarkupfalse%
+\isanewline
+\ \ \isacommand{let}\isamarkupfalse%
+\ {\isacharquery}SG\ {\isacharequal}\ {\isachardoublequoteopen}mk{\isacharunderscore}symmetric\ G{\isachardoublequoteclose}\isanewline
+\ \ \isacommand{interpret}\isamarkupfalse%
+\ S{\isacharcolon}\ pair{\isacharunderscore}fin{\isacharunderscore}digraph\ {\isachardoublequoteopen}{\isacharquery}SG{\isachardoublequoteclose}\ \isacommand{{\isachardot}{\isachardot}}\isamarkupfalse%
+\isanewline
+\ \ \isacommand{fix}\isamarkupfalse%
+\ u\ v\ \isacommand{assume}\isamarkupfalse%
+\ uv{\isacharunderscore}sG{\isacharcolon}\ {\isachardoublequoteopen}u\ {\isasymin}\ verts\ {\isacharquery}SG{\isachardoublequoteclose}\ {\isachardoublequoteopen}v\ {\isasymin}\ verts\ {\isacharquery}SG{\isachardoublequoteclose}\isanewline
+\ \ \isacommand{from}\isamarkupfalse%
+\ uv{\isacharunderscore}sG\ \isacommand{have}\isamarkupfalse%
+\ {\isachardoublequoteopen}u\ {\isasymin}\ verts\ G{\isachardoublequoteclose}\ {\isachardoublequoteopen}v\ {\isasymin}\ verts\ G{\isachardoublequoteclose}\ \isacommand{by}\isamarkupfalse%
+\ auto\isanewline
+\ \ \isacommand{then}\isamarkupfalse%
+\ \isacommand{have}\isamarkupfalse%
+\ {\isachardoublequoteopen}u\ {\isasymrightarrow}\isactrlsup {\isacharasterisk}\isactrlbsub {\isacharquery}SG\isactrlesub \ r{\isachardoublequoteclose}\ {\isachardoublequoteopen}r\ {\isasymrightarrow}\isactrlsup {\isacharasterisk}\isactrlbsub {\isacharquery}SG\isactrlesub \ v{\isachardoublequoteclose}\ \isanewline
+\ \ \ \ \isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}auto\ intro{\isacharcolon}\ reachable{\isacharunderscore}mk{\isacharunderscore}symmetricI\ path{\isacharunderscore}from{\isacharunderscore}root\ \ symmetric{\isacharunderscore}reachable\isanewline
+\ \ \ \ \ \ symmetric{\isacharunderscore}mk{\isacharunderscore}symmetric\ simp\ del{\isacharcolon}\ pverts{\isacharunderscore}mk{\isacharunderscore}symmetric{\isacharparenright}\isanewline
+\ \ \isacommand{then}\isamarkupfalse%
+\ \isacommand{show}\isamarkupfalse%
+\ {\isachardoublequoteopen}u\ {\isasymrightarrow}\isactrlsup {\isacharasterisk}\isactrlbsub {\isacharquery}SG\isactrlesub \ v{\isachardoublequoteclose}\isanewline
+\ \ \ \ \isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}rule\ S{\isachardot}reachable{\isacharunderscore}trans{\isacharparenright}\isanewline
+\isacommand{qed}\isamarkupfalse%
+%
+\endisatagproof
+{\isafoldproof}%
+%
+\isadelimproof
+\isanewline
+%
+\endisadelimproof
+\isanewline
+\isacommand{theorem}\isamarkupfalse%
+\ connected{\isacharunderscore}by{\isacharunderscore}path{\isacharcolon}\isanewline
+\ \ \isakeyword{fixes}\ u\ v\ {\isacharcolon}{\isacharcolon}\ {\isacharprime}a\isanewline
+\ \ \isakeyword{assumes}\ {\isachardoublequoteopen}u\ {\isasymin}\ pverts\ {\isacharparenleft}mk{\isacharunderscore}symmetric\ G{\isacharparenright}{\isachardoublequoteclose}\isanewline
+\ \ \isakeyword{assumes}\ {\isachardoublequoteopen}v\ {\isasymin}\ pverts\ {\isacharparenleft}mk{\isacharunderscore}symmetric\ G{\isacharparenright}{\isachardoublequoteclose}\isanewline
+\ \ \isakeyword{shows}\ {\isachardoublequoteopen}u\ {\isasymrightarrow}\isactrlsup {\isacharasterisk}\isactrlbsub mk{\isacharunderscore}symmetric\ G\isactrlesub \ v{\isachardoublequoteclose}\isanewline
+%
+\isadelimproof
+%
+\endisadelimproof
+%
+\isatagproof
+\isacommand{using}\isamarkupfalse%
+\ connectedG\ \ wellformed{\isacharunderscore}mk{\isacharunderscore}symmetric\ assms\isanewline
+\isacommand{unfolding}\isamarkupfalse%
+\ connected{\isacharunderscore}def\ strongly{\isacharunderscore}connected{\isacharunderscore}def\ \isacommand{by}\isamarkupfalse%
+\ fastforce%
+\endisatagproof
+{\isafoldproof}%
+%
+\isadelimproof
+\isanewline
+%
+\endisadelimproof
+\isacommand{end}\isamarkupfalse%
+\isanewline
+\isanewline
+\isacommand{corollary}\isamarkupfalse%
+\ {\isacharparenleft}\isakeyword{in}\ connected{\isacharunderscore}components{\isacharunderscore}locale{\isacharparenright}\ connected{\isacharunderscore}graph{\isacharcolon}\isanewline
+\ \ \isakeyword{assumes}\ {\isachardoublequoteopen}u\ {\isasymin}\ verts\ G{\isachardoublequoteclose}\ \isakeyword{and}\ {\isachardoublequoteopen}v\ {\isasymin}\ verts\ G{\isachardoublequoteclose}\isanewline
+\ \ \isakeyword{shows}\ {\isachardoublequoteopen}{\isasymexists}p{\isachardot}\ vpath\ p\ {\isacharparenleft}mk{\isacharunderscore}symmetric\ G{\isacharparenright}\ {\isasymand}\ hd\ p\ {\isacharequal}\ u\ {\isasymand}\ last\ p\ {\isacharequal}\ v{\isachardoublequoteclose}\isanewline
+%
+\isadelimproof
+%
+\endisadelimproof
+%
+\isatagproof
+\isacommand{proof}\isamarkupfalse%
+\ {\isacharminus}\isanewline
+\ \ \isacommand{interpret}\isamarkupfalse%
+\ S{\isacharcolon}\ pair{\isacharunderscore}fin{\isacharunderscore}digraph\ {\isachardoublequoteopen}mk{\isacharunderscore}symmetric\ G{\isachardoublequoteclose}\ \isacommand{{\isachardot}{\isachardot}}\isamarkupfalse%
+\isanewline
+\ \ \isacommand{show}\isamarkupfalse%
+\ {\isachardoublequoteopen}{\isacharquery}thesis{\isachardoublequoteclose}\ \isacommand{unfolding}\isamarkupfalse%
+\ S{\isachardot}reachable{\isacharunderscore}vpath{\isacharunderscore}conv{\isacharbrackleft}symmetric{\isacharbrackright}\isanewline
+\ \ \ \ \isacommand{using}\isamarkupfalse%
+\ assms\ \isacommand{by}\isamarkupfalse%
+\ {\isacharparenleft}auto\ intro{\isacharcolon}\ connected{\isacharunderscore}by{\isacharunderscore}path{\isacharparenright}\isanewline
+\isacommand{qed}\isamarkupfalse%
+%
+\endisatagproof
+{\isafoldproof}%
+%
+\isadelimproof
+\isanewline
+%
+\endisadelimproof
+%
+\isadelimtheory
+\isanewline
+%
+\endisadelimtheory
+%
+\isatagtheory
+\isacommand{end}\isamarkupfalse%
+%
+\endisatagtheory
+{\isafoldtheory}%
+%
+\isadelimtheory
+%
+\endisadelimtheory
+\end{isabellebody}%
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "root"
+%%% End:

@@ -1,0 +1,9 @@
+
+session "graph-verification-autocorres" = "AutoCorres" +
+  options [document = pdf, document_output = "output"]
+  theories [document = false]
+    "../Graph_Theory/Graph_Theory"
+    "../Library/Autocorres_Misc"
+  theories
+    Check_Connected
+  document_files "root.tex"

@@ -1,0 +1,10 @@
+
+session "graph-verification-simpl" = "Simpl" +
+  options [document = pdf, document_output = "output"]
+  theories [document = false]
+    "../Witness_Property/Connected_Components"
+    "../Witness_Property/Shortest_Path_Theory"
+    "../Graph_Theory/Graph_Theory"
+  theories
+    Graph_Checker_Verification_Simpl
+  document_files "root.tex"

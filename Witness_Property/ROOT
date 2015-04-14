@@ -1,0 +1,7 @@
+session "graph-verification" = "HOL" +
+  options [document = pdf, document_output = "output"]
+  theories [document = false]
+    "../Graph_Theory/Graph_Theory"
+  theories
+    Graph_Checker_Witness_Properties
+  document_files "root.tex" 
